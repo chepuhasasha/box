@@ -45,16 +45,6 @@ export class Viewer {
     }
   }
 
-  updateBox(doc: Types.Box) {
-    const box = this.boxes.find((box) => {
-      return box.id === doc.id
-    })
-    if (box) {
-      box.position = doc.position
-      box.rotate = doc.rotate
-    }
-  }
-
   resizeView(rect: DOMRect) {
     this.renderer.setSize(rect.width, rect.height)
     this.camera = new THREE.OrthographicCamera(

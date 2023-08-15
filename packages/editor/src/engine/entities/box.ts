@@ -1,5 +1,6 @@
 import type { Types } from '@box/adapter/'
 import * as THREE from 'three'
+import { watch } from 'vue'
 
 export class BoxEntity {
   public mesh: THREE.Mesh
@@ -16,6 +17,17 @@ export class BoxEntity {
     this.position = doc.position
     this.rotate = doc.rotate
     this.doc.position.x = 100
+
+    watch(
+      () => ({
+        x: doc.position.x,
+        y: doc.position.y,
+        z: doc.position.z
+      }),
+      (n, o) => {
+        this.p_position = { x: n.x, y: n.y, z: n.z }
+      }
+    )
   }
 
   set docPosition(value: Types.Box) {
@@ -32,6 +44,9 @@ export class BoxEntity {
   }
   set position(position: Types.SpacePoint) {
     this.doc.position = position
+    this.mesh.position.set(position.x, position.y, position.z)
+  }
+  set p_position(position: Types.SpacePoint) {
     this.mesh.position.set(position.x, position.y, position.z)
   }
   set rotate(rotate: Types.BoxRotate) {

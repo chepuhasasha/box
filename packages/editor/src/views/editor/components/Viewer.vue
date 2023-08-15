@@ -2,8 +2,8 @@
 .viewer(ref='viewerContainer')
 </template>
 <script lang="ts" setup>
-import { Viewer, BoxEntity, Grid } from '@/engine'
-import { onMounted, ref, type PropType, watch } from 'vue'
+import { Viewer, Grid } from '@/engine'
+import { onMounted, ref, type PropType } from 'vue'
 import { Types } from '@box/adapter'
 
 const viewerContainer = ref<HTMLDivElement | null>(null)
@@ -13,27 +13,12 @@ const GRID = new Grid()
 VIEWER.use(GRID)
 
 const props = defineProps({
-  boxes: { type: Array as PropType<Types.Box[]>, default: () => [] },
-  selected: { type: Object as PropType<Types.Box>, default: null }
+  boxes: { type: Array as PropType<Types.Box[]>, default: () => [] }
 })
 
 props.boxes.forEach((doc) => {
   VIEWER.addBox(doc)
 })
-
-watch(
-  () => ({
-    doc: props.selected,
-    x: props.selected.position.x,
-    y: props.selected.position.y,
-    z: props.selected.position.z
-  }),
-  (n, o) => {
-    if (n) {
-      VIEWER.updateBox(n.doc)
-    }
-  }
-)
 
 onMounted(() => {
   if (viewerContainer.value) {

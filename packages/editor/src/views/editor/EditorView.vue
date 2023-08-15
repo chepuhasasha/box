@@ -5,7 +5,7 @@
     input(v-model='boxes[0].position.x' type='range' min='-100', max='100')
     input(v-model='boxes[0].position.y' type='range' min='-100', max='100')
     input(v-model='boxes[0].position.z' type='range' min='-100', max='100')
-  Viewer(:boxes='boxes' :selected='boxes[0]')
+  Viewer(:boxes='boxes')
 </template>
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
