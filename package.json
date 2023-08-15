@@ -1,0 +1,23 @@
+{
+  "name": "box",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chepuhasasha/box.git"
+  },
+  "author": "Sergei Batukov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chepuhasasha/box/issues"
+  },
+  "homepage": "https://github.com/chepuhasasha/box#readme",
+  "workspaces": [
+    "packages\\editor",
+    "packages\\adapter"
+  ]
+}

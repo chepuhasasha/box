@@ -1,0 +1,7 @@
+# FITTER
+
+## init
+
+```
+npm install
+```
