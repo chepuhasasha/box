@@ -5,6 +5,4 @@ h1 Auth page
 
 </script>
 <style lang="sass">
-h1
-  color: var(--red)
 </style>

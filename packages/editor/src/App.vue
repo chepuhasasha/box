@@ -7,5 +7,6 @@ main
 </script>
 <style lang="sass">
 main
-  background: black
+  width: 100vw
+  height: 100vh
 </style>
