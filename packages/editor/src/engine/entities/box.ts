@@ -16,7 +16,6 @@ export class BoxEntity {
     this.mesh = new THREE.Mesh(this._geometry, this.material)
     this.position = doc.position
     this.rotate = doc.rotate
-    this.doc.position.x = 100
 
     watch(
       () => ({

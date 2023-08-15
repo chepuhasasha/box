@@ -2,6 +2,7 @@ import { Types } from '@box/adapter'
 import * as THREE from 'three'
 import { BoxEntity, type ContainerEntity } from '.'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { watch } from 'vue'
 
 export interface ViewerTool {
   enable: boolean
@@ -15,6 +16,16 @@ export class Viewer {
   DOMElement: HTMLDivElement | null = null
   controls: OrbitControls | null = null
   boxes: BoxEntity[] = []
+
+  watch(props: { boxes: Types.Box[] }) {
+    watch(
+      () => props.boxes,
+      (n) => {
+        this.boxes = []
+        n.forEach((doc) => this.addBox(doc))
+      }
+    )
+  }
 
   animate() {
     requestAnimationFrame(this.animate.bind(this))

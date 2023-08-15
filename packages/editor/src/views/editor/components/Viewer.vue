@@ -7,25 +7,19 @@ import { onMounted, ref, type PropType } from 'vue'
 import { Types } from '@box/adapter'
 
 const viewerContainer = ref<HTMLDivElement | null>(null)
-const VIEWER = new Viewer()
-const GRID = new Grid()
-
-VIEWER.use(GRID)
-
 const props = defineProps({
   boxes: { type: Array as PropType<Types.Box[]>, default: () => [] }
 })
 
-props.boxes.forEach((doc) => {
-  VIEWER.addBox(doc)
-})
+const VIEWER = new Viewer()
+VIEWER.watch(props)
+const GRID = new Grid()
+VIEWER.use(GRID)
 
 onMounted(() => {
   if (viewerContainer.value) {
     VIEWER.mount(viewerContainer.value)
-    if (VIEWER.camera) {
-      VIEWER.setCameraPosition(0, 0, 100)
-    }
+    VIEWER.setCameraPosition(0, 0, 100)
   }
 })
 </script>
