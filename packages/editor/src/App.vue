@@ -1,12 +1,15 @@
 <template lang="pug">
-main
-  RouterView
+RouterView
 </template>
 <script lang="ts" setup>
 
 </script>
 <style lang="sass">
+body
+  background: var(--background-color-100)
 main
-  width: 100vw
-  height: 100vh
+  min-height: 100vh
+  background: var(--background-color-100)
+  overflow-y: auto
+  overflow-x: hidden
 </style>
