@@ -4,7 +4,11 @@ import { watch } from 'vue'
 
 export class BoxEntity {
   public mesh: THREE.Mesh
-  public material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  public material: THREE.MeshMatcapMaterial = new THREE.MeshMatcapMaterial({
+    color: 0xC9D1D9,
+    transparent: true,
+    opacity: 1
+  })
   private _geometry: THREE.BoxGeometry
 
   constructor(public doc: Types.Box) {
@@ -16,7 +20,6 @@ export class BoxEntity {
     this.mesh = new THREE.Mesh(this._geometry, this.material)
     this.position = doc.position
     this.rotate = doc.rotate
-
     watch(
       () => ({
         x: doc.position.x,
@@ -43,10 +46,18 @@ export class BoxEntity {
   }
   set position(position: Types.SpacePoint) {
     this.doc.position = position
-    this.mesh.position.set(position.x, position.y, position.z)
+    this.mesh.position.set(
+      position.x + this.doc.geometry.width / 2,
+      position.y + this.doc.geometry.height / 2,
+      position.z + this.doc.geometry.depth / 2
+    )
   }
   set p_position(position: Types.SpacePoint) {
-    this.mesh.position.set(position.x, position.y, position.z)
+    this.mesh.position.set(
+      position.x + this.doc.geometry.width / 2,
+      position.y + this.doc.geometry.height / 2,
+      position.z + this.doc.geometry.depth / 2
+    )
   }
   set rotate(rotate: Types.BoxRotate) {
     if (rotate.x_rotate <= this.doc.props.rotate_limits.x_rotate) {

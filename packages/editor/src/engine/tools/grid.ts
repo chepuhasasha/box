@@ -4,7 +4,7 @@ import { GridHelper } from 'three'
 export class Grid implements ViewerTool {
   enable: boolean = true
   install(viewer: Viewer) {
-    const gridHelper = new GridHelper( 1000, 100, 0x0000ff, 0x808080 )
+    const gridHelper = new GridHelper( 10000, 100, 0x21262D, 0x1A1D22 )
     viewer.scene.add(gridHelper)
   }
 }

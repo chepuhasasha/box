@@ -2,7 +2,7 @@
 .viewer(ref='viewerContainer')
 </template>
 <script lang="ts" setup>
-import { Viewer, Grid } from '@/engine'
+import { Viewer, Grid, Mover } from '@/engine'
 import { onMounted, ref, type PropType } from 'vue'
 import { Types } from '@box/adapter'
 
@@ -13,6 +13,8 @@ const props = defineProps({
 
 const VIEWER = new Viewer()
 VIEWER.watch(props)
+const MOVER = new Mover()
+VIEWER.use(MOVER)
 const GRID = new Grid()
 VIEWER.use(GRID)
 

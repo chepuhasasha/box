@@ -1,6 +1,6 @@
 import { Types } from '@box/adapter'
 import * as THREE from 'three'
-import { BoxEntity, type ContainerEntity } from '.'
+import { BoxEntity } from '.'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { watch } from 'vue'
 
@@ -12,7 +12,7 @@ export interface ViewerTool {
 export class Viewer {
   scene: THREE.Scene = new THREE.Scene()
   camera: THREE.OrthographicCamera | null = null
-  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
+  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({antialias: true})
   DOMElement: HTMLDivElement | null = null
   controls: OrbitControls | null = null
   boxes: BoxEntity[] = []
@@ -37,6 +37,7 @@ export class Viewer {
     this.DOMElement = div
     this.DOMRect = this.DOMElement.getBoundingClientRect()
     this.DOMElement.appendChild(this.renderer.domElement)
+    this.scene.background = new THREE.Color(0x010409)
     this.animate()
     window.addEventListener('resize', () => {
       if (this.DOMElement) this.DOMRect = this.DOMElement.getBoundingClientRect()
@@ -58,15 +59,18 @@ export class Viewer {
 
   resizeView(rect: DOMRect) {
     this.renderer.setSize(rect.width, rect.height)
+    // this.renderer.setViewport( 200, 200, 200, 200 );
     this.camera = new THREE.OrthographicCamera(
       rect.width / -2,
       rect.width / 2,
       rect.height / 2,
       rect.height / -2,
-      1,
+      -1000,
       1000
     )
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.1
   }
 
   setCameraPosition(x: number, y: number, z: number) {
