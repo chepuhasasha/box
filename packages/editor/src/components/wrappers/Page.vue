@@ -6,7 +6,6 @@
     slot(name='head')
   .page_body
     slot
-    pre {{ scrolled }}
 </template>
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
@@ -29,23 +28,28 @@ onMounted(() => {
   display: flex
   flex-direction: column
   max-width: 1200px
-  width: 100%
   margin: 0 auto
-  height: 200vh
+  width: 100%
   background: var(--background-color-100)
-  border-left: 1px solid var(--background-color-200)
-  border-right: 1px solid var(--background-color-200)
-  color: var(--text-color-100)
+  border: 1px solid var(--background-color-200)
+  border-top: none
 
   &_head
     display: flex
     flex-direction: column
-    max-width: 1200px
-    width: 100vw
-    padding-top: 100px
+    max-width: 1198px
+    width: calc(100vw - 2px)
     background: var(--background-color-100)
     border-bottom: 1px solid var(--background-color-200)
+    margin-top: -1px
     &_fixed
       position: fixed
-  // &_body
+      top: -1px
+  &_body
+    height: max-content
+
+@media screen and (min-width: 1200px)
+  .page_head
+    padding-top: 100px
+    
 </style>

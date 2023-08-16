@@ -8,8 +8,14 @@ RouterView
 body
   background: var(--background-color-100)
 main
-  min-height: 100vh
   background: var(--background-color-100)
   overflow-y: auto
   overflow-x: hidden
+
+@media screen and (min-width: 1200px)
+  // main
+  //   // display: flex
+  //   // align-items: center
+  //   // justify-content: center
+  //   height: 100vh
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-.iconbtn(:class='[`iconbtn__${contrast}`]')
+button.icon-btn(:class='[`icon-btn__${contrast}`]' @click='test')
   w_icon(:name='name')
 </template>
 <script lang="ts" setup>
@@ -10,23 +10,25 @@ defineProps({
   contrast: { type: String as PropType<'100' | '200' | '300'>, default: '100' },
 })
 
-
 </script>
 <style lang="sass">
-.iconbtn
+.icon-btn
   display: flex
   place-items: center
   place-content: center
   cursor: pointer
   width: 40px
   min-width: 40px
-  max-width: 40px
+  max-width: max-content
   height: 40px
   min-height: 40px
   max-height: 40px
 
   border-radius: 4px
   transition: all ease 0.3s
+
+  &:focus-visible
+    outline: 2px solid var(--interactive-color-200)
 
   &__100
     background: var(--background-color-100)

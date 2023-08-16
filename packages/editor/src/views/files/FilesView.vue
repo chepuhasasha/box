@@ -1,15 +1,18 @@
 <template lang="pug">
 wr_page
   template(v-slot:head)
-    e_button(size='s') test
-    e_button test
-  e_button(size='l' :icons='[null, "right"]') test
-  e_button(size='l' mode='ghost' :icons='["sponsor", "right"]') test
-  e_button(size='l' disable) test
-  e_button(mode='ghost') test
-  e_icon_button(name='file')
+    Nav
+  FileListItem
+  FileListItem
+  FileListItem
+  FileListItem
+
+
+
 </template>
 <script lang="ts" setup>
+import Nav from './components/blocks/Nav.vue'
+import FileListItem from './components/elements/FileListItem.vue'
 
 </script>
 <style lang="sass">
