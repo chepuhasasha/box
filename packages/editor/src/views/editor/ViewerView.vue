@@ -26,18 +26,18 @@ onMounted(() => {
 })
 </script>
 <style lang="sass">
-.viewer
-  display: flex
-  flex-direction: column
-  gap: 20px
-  padding: 20px
-  width: 100vw
-  overflow: hidden
-  span
-    word-wrap: break-word
-  pre
-    white-space: pre-wrap
-  color: white !important
-  *
-    color: white !important
+// .viewer
+//   display: flex
+//   flex-direction: column
+//   gap: 20px
+//   padding: 20px
+//   width: 100vw
+//   overflow: hidden
+//   span
+//     word-wrap: break-word
+//   pre
+//     white-space: pre-wrap
+//   color: white !important
+//   *
+//     color: white !important
 </style>

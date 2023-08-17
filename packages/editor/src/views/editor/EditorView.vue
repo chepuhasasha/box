@@ -1,11 +1,13 @@
 <template lang="pug">
 .editor
   .tools
+    e_container(v-for='container in file.containers' :key='container.id' :container='container')
     //- button(@click='add') ADD
-    pre(v-for='box in file.boxes') {{ box }}
+    //- pre(v-for='box in file.boxes') {{ box }}
   Viewer(:boxes='file.boxes')
 </template>
 <script lang="ts" setup>
+import e_container from './elements/Container.vue'
 import { computed, ref } from 'vue'
 import Viewer from './components/Viewer.vue'
 import { Types } from '@box/adapter'
