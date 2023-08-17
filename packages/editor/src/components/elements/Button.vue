@@ -1,19 +1,22 @@
 <template lang="pug">
-button.button(:class='classes', :style='{width: fill ? "100%" : "max-content"}')
+component(:is='tag').button(:class='classes', :style='{width: fill ? "100%" : "max-content"}')
   w_icon(v-if='icons[0]' :name='icons[0]' :size='size')
   slot
+  .button_content
+    slot(name='content')
   w_icon(v-if='icons[1]' :name='icons[1]' :size='size')
 </template>
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 
 const props = defineProps({
-  mode: { type: String as PropType<'default' | 'ghost'>, default: 'default' },
+  mode: { type: String as PropType<'default' | 'ghost' | 'dark'>, default: 'default' },
   disable: { type: Boolean as PropType<boolean>, default: false },
   status: { type: String as PropType<null | 'ok' | 'warn' | 'danger'>, default: null },
   size: { type: String as PropType<'s' | 'm' | 'l'>, default: 'm' },
   icons: { type: Array as PropType<(string | null)[]>, default: () => [] },
-  fill: { type: Boolean as PropType<boolean>, default: false }
+  fill: { type: Boolean as PropType<boolean>, default: false },
+  tag: { type: String as PropType<"button" | "a">, default: "button" }
 })
 
 const classes = computed(() => ({
@@ -27,8 +30,10 @@ const classes = computed(() => ({
 .button
   display: flex
   align-items: center
+  justify-content: space-between
   cursor: pointer
   border: none
+  text-decoration: none
 
   font-family: Inter
   font-style: normal
@@ -36,6 +41,21 @@ const classes = computed(() => ({
 
   transition: all ease 0.3s
   outline: none
+  // height: 100%
+
+  &_content
+    display: flex
+    flex-direction: column
+    text-align: left
+    gap: 4px
+    span:first-child
+      font-size: 14px
+      font-weight: 500
+      line-height: 16px
+    span:last-child
+      font-size: 12px
+      line-height: 14px
+      font-weight: 400
 
 
   &:focus-visible
@@ -43,8 +63,8 @@ const classes = computed(() => ({
 
   &__disable
     background: var(--disable-background-color) !important
-    color: var(--disable-text-color) !important
     cursor: not-allowed !important
+    color: var(--disable-text-color) !important
     &:hover
       background: var(--disable-background-color) !important
       color: var(--disable-text-color) !important
@@ -67,7 +87,7 @@ const classes = computed(() => ({
 
   &__l
     border-radius: 0
-    padding: 16px 24px
+    padding: 20px
     gap: 16px
 
     font-size: 16px
@@ -122,6 +142,8 @@ const classes = computed(() => ({
     &__ok
       background: var(--ok-color-transparent)
       color: var(--ok-color-100)
+      path
+        stroke: var(--ok-color-100)
 
       &:hover
         background: var(--warn-color-100)
@@ -130,6 +152,8 @@ const classes = computed(() => ({
     &__warn
       background: var(--warn-color-transparent)
       color: var(--warn-color-100)
+      path
+        stroke: var(--warn-color-100)
 
       &:hover
         background: var(--warn-color-100)
@@ -138,8 +162,68 @@ const classes = computed(() => ({
     &__danger
       background: var(--danger-color-transparent)
       color: var(--danger-color-100)
+      path
+        stroke: var(--danger-color-100)
 
       &:hover
         background: var(--danger-color-100)
         color: var(--text-color-100)
+
+  &__dark
+    background: var(--background-color-200)
+    color: var(--text-color-100)
+    path
+      stroke: var(--text-color-100)
+
+    .button_content
+      span:last-child
+        color: var(--text-color-300)
+
+    &:hover
+      background: var(--interactive-color-100)
+      color: var( --text-color-100)
+      path
+        stroke: var( --text-color-100)
+      .button_content
+        span:last-child
+          color: var(--text-color-100)
+
+
+    &__ok
+      background: var(--background-color-200)
+      color: var(--ok-color-100)
+
+      path
+        stroke: var(--ok-color-100)
+
+      &:hover
+        background: var(--warn-color-100)
+        color: var(--text-color-100)
+
+    &__warn
+      background: var(--background-color-200)
+      color: var(--warn-color-100)
+
+      path
+        stroke: var(--warn-color-100)
+
+      &:hover
+        background: var(--warn-color-100)
+        color: var(--text-color-100)
+
+    &__danger
+      background: var(--background-color-200)
+      color: var(--danger-color-100)
+      path
+        stroke: var(--danger-color-100)
+
+      .button_content
+        span
+          color: var(--danger-color-100)
+
+      &:hover
+        background: var(--danger-color-100)
+        color: var(--text-color-100)
+        span
+          color: var(--text-color-100)
 </style>

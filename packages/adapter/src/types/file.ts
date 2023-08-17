@@ -7,4 +7,5 @@ export interface File {
   name: string
   boxes: Box[]
   containers: Container[]
+  last_update: number
 }

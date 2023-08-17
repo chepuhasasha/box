@@ -1,33 +1,16 @@
 <template lang="pug">
-.user
-  w_avatar(:name='user.name', :last_name='user.last_name')
+.user(v-if='userStore.user')
+  w_avatar(:name='userStore.user.name', :last_name='userStore.user.last_name')
   .user_info
-    .user_fullname {{ user.name  }} {{ user.last_name  }}
-    .user_username {{ user.username  }}
-  w_tag(v-if="user.pro" mode='pro') PRO
+    .user_fullname {{ userStore.user.name  }} {{ userStore.user.last_name  }}
+    .user_username {{ userStore.user.username  }}
+  w_tag(v-if="userStore.user.pro" mode='pro') PRO
   e_icon_button(name='logout' contrast='200')
 </template>
 <script lang="ts" setup>
-import type { PropType } from 'vue'
+import { useUserStore } from '@/stores'
 
-interface User {
-  username: string
-  name: string
-  last_name: string
-  pro: boolean
-}
-
-defineProps({
-  user: {
-    type: Object as PropType<User>,
-    default: () => ({
-      username: 'sergeybatukov',
-      name: 'Sergey',
-      last_name: 'Batukov',
-      pro: true
-    })
-  }
-})
+const userStore = useUserStore()
 </script>
 <style lang="sass">
 .user

@@ -18,6 +18,7 @@ export class Viewer {
   boxes: BoxEntity[] = []
 
   watch(props: { boxes: Types.Box[] }) {
+    props.boxes.forEach((doc) => this.addBox(doc))
     watch(
       () => props.boxes,
       (n) => {
