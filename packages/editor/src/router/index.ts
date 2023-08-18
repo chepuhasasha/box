@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AuthView from '@/views/AuthView.vue'
 import FilesView from '@/views/files/FilesView.vue'
-import EditorView from '@/views/editor/EditorView.vue'
+import { EditorView } from '@/editor'
 import ViewerView from '@/views/editor/ViewerView.vue'
 
 const router = createRouter({
@@ -26,7 +26,7 @@ const router = createRouter({
       path: '/auth',
       name: 'auth',
       component: AuthView
-    },
+    }
   ]
 })
 

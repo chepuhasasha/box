@@ -8,9 +8,10 @@ export interface BoxProps {
 export interface Box {
   id: string
   name: string
+  object_type: 'BOX'
   geometry: BoxGeometry
   position: SpacePoint
   rotate: BoxRotate
-  type_code: string
   props: BoxProps
+  container_id: string | null
 }

@@ -3,8 +3,8 @@ import type { Container } from './container'
 
 export interface File {
   id: string
-  owner_id: string
   name: string
+  owner_id: string
   boxes: Box[]
   containers: Container[]
   last_update: number

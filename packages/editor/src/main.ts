@@ -12,6 +12,9 @@ import elements from '@/components/elements'
 import wrappers from '@/components/wrappers'
 import blocks from '@/components/blocks'
 
+// EDITOR
+import { editorComponents } from '@/editor'
+
 createApp(App)
   .use(createPinia())
   .use(router)
@@ -19,4 +22,5 @@ createApp(App)
   .use(elements)
   .use(wrappers)
   .use(blocks)
+  .use(editorComponents)
   .mount('#app')

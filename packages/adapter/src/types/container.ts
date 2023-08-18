@@ -4,7 +4,7 @@ import type { BoxGeometry } from "./primitives";
 export interface Container {
   id: string;
   name: string;
-  type_code: string;
-  boxes: Box[];
+  object_type: 'CONTAINER'
+  boxes: string[];
   geometry: BoxGeometry;
 }

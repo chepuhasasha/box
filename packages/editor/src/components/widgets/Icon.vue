@@ -33,7 +33,7 @@ const props = defineProps({
 const style = computed(() => {
   const map = {
     s: 14,
-    m: 20,
+    m: 18,
     l: 26
   }
   return {

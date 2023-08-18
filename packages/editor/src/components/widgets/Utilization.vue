@@ -31,13 +31,12 @@ const style = computed(() => {
   align-items: center
   gap: 10px
   width: 100%
-  height: 6px
   span
     width: 30px
     font-size: 12px
   &_wrapp
     width: 100%
-    height: 100%
+    height: 6px
     border-bottom: 1px solid var(--interactive-color-100)
   &_value
     width: 50%

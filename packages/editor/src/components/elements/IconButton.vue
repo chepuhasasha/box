@@ -38,13 +38,13 @@ defineProps({
 
   &__200
     background: var(--background-color-200)
-    border: 1px solid var(--background-color-300)
+    border: 1px solid var(--background-color-200)
     &:hover
       background: var(--background-color-300)
 
   &__300
     background: var(--background-color-300)
-    border: 1px solid var(--background-color-400)
+    border: 1px solid var(--background-color-300)
     &:hover
       background: var(--background-color-400)
 </style>

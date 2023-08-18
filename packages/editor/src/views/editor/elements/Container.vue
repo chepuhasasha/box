@@ -1,22 +1,26 @@
 <template lang="pug">
-.container(v-if='container')
-  .container_head(@click='open = !open')
-    e_icon_button(name='box_simple')
-    .container_info
-      span {{ container.name  }}
-      span {{ info.m }}m | {{ info.m3 }}m³ | {{ info.l  }} L.
-  w_util(:value='utilization')
+.container_wrapper
+  .container(@click='open = !open')
+    .container_head
+      e_icon_button(name='box_simple')
+      .container_info
+        span {{ container.name  }}
+        w_util(:value='utilization')
+        //- span {{ info.m }}m | {{ info.m3 }}m³ | {{ info.l  }} L.
   .container_body(v-show='open')
-    e_box(v-for='box in container.boxes' :key='box.id' :box='box')
+    editor_e_box(v-for='box in editorStore.boxesByContainerId(container.id)' :key='box.id' :box='box' inside)
 </template>
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
 import { Types } from '@box/adapter'
-import e_box from './Box.vue'
+import { useEditorStore } from '../store';
 
 const props = defineProps({
   container: { type: Object as PropType<Types.Container>, default: null }
 })
+
+const editorStore = useEditorStore()
+
 const open = ref(true)
 const utilization = ref(Math.floor(Math.random() * 100))
 const info = computed(() => {
@@ -35,9 +39,11 @@ const info = computed(() => {
   flex-direction: column
   gap: 10px
   width: 100%
-  padding: 20px
+  padding: 10px 20px
   background: var(--background-color-200)
   border-bottom: 1px solid var(--background-color-300)
+  &_wrapper
+    border-bottom: 1px solid var(--background-color-300)
   &:hover
     background: var(--background-color-300)
   &_head
@@ -47,6 +53,9 @@ const info = computed(() => {
   &_info
     display: flex
     flex-direction: column
+    justify-content: space-around
+    gap: 10px
+    width: 100%
     span:first-child
       font-size: 12px
       color: var(--text-color-100)
@@ -55,4 +64,5 @@ const info = computed(() => {
       color: var(--text-color-300)
   &_body
     border-left: 1px dashed var(--background-color-400)
+    margin-left: 10px
 </style>
