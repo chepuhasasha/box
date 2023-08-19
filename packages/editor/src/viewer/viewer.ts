@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { useViewerStore } from '.'
 import { watch } from 'vue'
+import { Types } from '@box/adapter'
 
 export interface ViewerTool {
   install: (viewer: Viewer) => void
@@ -11,7 +12,7 @@ export interface ViewerTool {
 export class Viewer {
   scene: THREE.Scene = new THREE.Scene()
   camera: THREE.OrthographicCamera = new THREE.OrthographicCamera()
-  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
+  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({antialias: true})
   DOMElement: HTMLDivElement | null = null
   controls: OrbitControls
   grid: THREE.GridHelper
@@ -29,7 +30,7 @@ export class Viewer {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.grid = new THREE.GridHelper(...options.grid)
     this.scene.add(this.grid)
-  
+
     this.scene.background = new THREE.Color(options.background)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.1
@@ -41,7 +42,12 @@ export class Viewer {
     watch(
       () => this.store.selected.container,
       (n, o) => {
-        console.log(n)
+        if (o) {
+          this.removeContainer(o)
+        }
+        if (n) {
+          this.addContainer(n)
+        }
       }
     )
     watch(
@@ -63,6 +69,16 @@ export class Viewer {
     this.renderer.render(this.scene, this.camera)
     this.controls.update()
   }
+
+  addContainer(container: Types.Container) {
+    const geometry = new THREE.BoxGeometry(1000, 10, 1000)
+    const material = new THREE.MeshMatcapMaterial({ color: 0xff0000 })
+    const plane = new THREE.Mesh(geometry, material)
+    plane.position.y = -10
+    this.scene.add(plane)
+    console.log(container)
+  }
+  removeContainer(container: Types.Container) {}
 
   mount(div: HTMLDivElement) {
     this.DOMElement = div
