@@ -33,6 +33,7 @@ export class Viewer {
     this.scene.background = new THREE.Color(options.background)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.1
+
     this.initWatchers()
   }
 
@@ -68,9 +69,11 @@ export class Viewer {
     this.DOMElement.appendChild(this.renderer.domElement)
     this.resize()
     this.animate()
-    window.addEventListener('resize', () => {
-      this.resize()
-    })
+    window.addEventListener('resize', this.resize.bind(this))
+  }
+
+  destroy() {
+    window.removeEventListener('resize', this.resize.bind(this))
   }
 
   resize() {

@@ -30,8 +30,8 @@ Teleport(to='body')
 </template>
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import { onMounted, ref } from 'vue'
-import { Viewer, Grid, useViewerStore } from '@/viewer'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { Viewer, useViewerStore } from '@/viewer'
 
 const viewerStore = useViewerStore()
 viewerStore.openFile(useRoute().params.id.toString())
@@ -47,6 +47,10 @@ onMounted(() => {
   if (viewerDiv.value) {
     VIEWER.mount(viewerDiv.value)
   }
+})
+
+onUnmounted(() => {
+  VIEWER.destroy()
 })
 </script>
 <style lang="sass">
