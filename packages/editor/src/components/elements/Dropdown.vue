@@ -5,8 +5,8 @@ button.dropdown(@click='isOpen = true')
     ref='ddbody'
     v-show='isOpen'
     :style='position'
+    @mouseleave='isOpen = false'
   )
-    //- @mouseleave='isOpen = false'
     slot
 </template>
 <script lang="ts" setup>

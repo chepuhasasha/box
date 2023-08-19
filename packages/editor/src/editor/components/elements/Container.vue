@@ -8,7 +8,7 @@
     e_icon_button(:name='isOpen ? "up" : "down"' @click='isOpen = !isOpen' contrast='300')
   .container_childs(v-show='isOpen')
     editor_e_box(
-      v-for='box in fileStore.boxesByContainerId(container.id)'
+      v-for='box in viewerStore.boxesByContainerId(container.id)'
       :key='box.id'
       :box='box'
       inside
@@ -17,15 +17,15 @@
 <script lang="ts" setup>
 import { computed, ref, type PropType } from 'vue'
 import type { Types } from '@box/adapter'
-import { useFileStore } from '@/editor'
+import { useViewerStore } from '@/viewer'
 
 const props = defineProps({
   container: { type: Object as PropType<Types.Container>, default: null }
 })
 const isOpen = ref(true)
-const fileStore = useFileStore()
+const viewerStore = useViewerStore()
 const classes = computed(() => ({
-  container__selected: fileStore.isContainerSelected(props.container.id)
+  container__selected: viewerStore.isContainerSelected(props.container.id)
 }))
 const utilization = computed(() => {
   return Math.floor(Math.random() * 100)

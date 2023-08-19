@@ -25,8 +25,8 @@ wr_modal(@close='$emit("close")')
       fill size='l' :icons='[null, "plus"]') ADD {{ tab.toUpperCase()  }}
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useFileStore } from '@/editor'
+import { computed, ref } from 'vue'
+import { useViewerStore } from '@/viewer'
 
 const tab = ref<'box' | 'container'>('box')
 const form = ref({
@@ -46,11 +46,14 @@ const form = ref({
     }
   }
 })
-const fileStore = useFileStore()
+const viewerStore = useViewerStore()
 const emit = defineEmits(['close'])
+// const validate = computed(() => {
+//   return form.value.name && form.value.
+// })
 const add = () => {
   if (tab.value === 'box') {
-    fileStore.addLooseBox({
+    viewerStore.addLooseBox({
       // @ts-ignore
       name: form.value.name,
       // @ts-ignore

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { Types } from '@box/adapter'
 import { v4 } from 'uuid'
 
-export const useFileStore = defineStore('file', {
+export const useViewerStore = defineStore('viewer', {
   state: () => ({
     selected: {
       container: null as Types.Container | null,

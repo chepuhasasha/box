@@ -1,42 +1,52 @@
 <template lang="pug">
-.editor(v-if='fileStore.file')
-  .editor_head(:title='fileStore.file.name')
+.editor(v-if='viewerStore.file')
+  .editor_head(:title='viewerStore.file.name')
     e_drop
       template(v-slot:head)
         e_icon_button(name='menu' contrast='200')
+      e_button(mode="dark" fill) Open
       e_button(mode="dark" fill :icons='[null, "left"]') Back to files
       e_button(mode="dark" fill :icons='[null, "save"]') Save
       e_button(mode="dark" fill :icons='[null, "download"]') Save local
       e_button(mode="dark" fill :icons='[null, "file"]') View doc
       e_button(mode="dark" fill :icons='[null, "logout"]') Logout
-    span {{ fileStore.file.name  }}
+    span {{ viewerStore.file.name  }}
     e_icon_button(name='plus' contrast='200' @click='show.add_object = true')
   .editor_list
     editor_e_box(
-      v-for='box in fileStore.looseBoxes'
+      v-for='box in viewerStore.looseBoxes'
       :key="box.id" 
       :box='box')
     editor_e_container(
-      v-for='container in fileStore.file.containers'
+      v-for='container in viewerStore.file.containers'
       :key="container.id"
       :container='container')
 
-  .editor_viewer
-    span VIEWER
+  .editor_viewer(ref='viewerDiv')
+    
 
 Teleport(to='body')
   editor_m_add_object(v-if='show.add_object' @close='show.add_object = false')
 </template>
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import { useFileStore } from '../stores'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue'
+import { Viewer, Grid, useViewerStore } from '@/viewer'
 
-const fileStore = useFileStore()
-fileStore.openFile(useRoute().params.id.toString())
+const viewerStore = useViewerStore()
+viewerStore.openFile(useRoute().params.id.toString())
 
 const show = ref({
   add_object: false
+})
+
+const viewerDiv = ref<HTMLDivElement | null>(null)
+const VIEWER = new Viewer()
+
+onMounted(() => {
+  if (viewerDiv.value) {
+    VIEWER.mount(viewerDiv.value)
+  }
 })
 </script>
 <style lang="sass">

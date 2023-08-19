@@ -3,9 +3,9 @@
   v-if='box'
   :title='box.name'
   :class='classes'
-  @click='fileStore.select(box)'
-  @mouseenter='fileStore.hover(box)'
-  @mouseleave='fileStore.hover(null)'
+  @click='viewerStore.select(box)'
+  @mouseenter='viewerStore.hover(box)'
+  @mouseleave='viewerStore.hover(null)'
   )
   .box_info 
     span {{ box.name  }}
@@ -22,18 +22,18 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import type { Types } from '@box/adapter'
-import { useFileStore } from '@/editor'
+import { useViewerStore } from '@/viewer'
 
 const props = defineProps({
   box: { type: Object as PropType<Types.Box>, default: null },
   inside: { type: Boolean as PropType<boolean>, default: false }
 })
 
-const fileStore = useFileStore()
+const viewerStore = useViewerStore()
 const classes = computed(() => ({
   box__inside: props.inside,
-  box__selected: fileStore.isBoxSelected(props.box.id),
-  box__hovered: fileStore.isBoxHovered(props.box.id),
+  box__selected: viewerStore.isBoxSelected(props.box.id),
+  box__hovered: viewerStore.isBoxHovered(props.box.id),
   box__danger: props.box.container_id ? false : true
 }))
 </script>
