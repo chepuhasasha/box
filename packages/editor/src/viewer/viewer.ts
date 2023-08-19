@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { useViewerStore } from '.'
+import { watch } from 'vue'
 
 export interface ViewerTool {
   install: (viewer: Viewer) => void
@@ -13,10 +15,11 @@ export class Viewer {
   DOMElement: HTMLDivElement | null = null
   controls: OrbitControls
   grid: THREE.GridHelper
+  store = useViewerStore()
 
   constructor(
     options: {
-      background: number,
+      background: number
       grid: [number, number, number, number]
     } = {
       background: 0x010409,
@@ -26,10 +29,32 @@ export class Viewer {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.grid = new THREE.GridHelper(...options.grid)
     this.scene.add(this.grid)
+  
     this.scene.background = new THREE.Color(options.background)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.1
-    // this.controls.enablePan = false
+    this.initWatchers()
+  }
+
+  initWatchers() {
+    watch(
+      () => this.store.selected.container,
+      (n, o) => {
+        console.log(n)
+      }
+    )
+    watch(
+      () => this.store.selected.box,
+      (n, o) => {
+        // console.log(n)
+      }
+    )
+    watch(
+      () => this.store.hovered.box,
+      (n, o) => {
+        // console.log(n)
+      }
+    )
   }
 
   animate() {
