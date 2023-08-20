@@ -1,8 +1,10 @@
+import { shaders } from './shaders'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { useViewerStore } from '.'
 import { watch } from 'vue'
 import { Types } from '@box/adapter'
+import { ContainerSpaceEntity } from './entities'
 
 export interface ViewerTool {
   install: (viewer: Viewer) => void
@@ -12,11 +14,17 @@ export interface ViewerTool {
 export class Viewer {
   scene: THREE.Scene = new THREE.Scene()
   camera: THREE.OrthographicCamera = new THREE.OrthographicCamera()
-  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({antialias: true})
+  renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ antialias: true })
   DOMElement: HTMLDivElement | null = null
   controls: OrbitControls
   grid: THREE.GridHelper
   store = useViewerStore()
+  hatchingMaterial = new THREE.ShaderMaterial({
+    vertexShader: shaders.hatching.v,
+    fragmentShader: shaders.hatching.f,
+    uniforms: { time: { value: 0.0 }, lineWidth: { value: 1.8 } }
+  })
+  selectedContainer: ContainerSpaceEntity | null = null
 
   constructor(
     options: {
@@ -42,11 +50,10 @@ export class Viewer {
     watch(
       () => this.store.selected.container,
       (n, o) => {
-        if (o) {
-          this.removeContainer(o)
-        }
         if (n) {
-          this.addContainer(n)
+          this.selectContainer(n)
+        } else {
+          this.unselectContainer()
         }
       }
     )
@@ -68,17 +75,18 @@ export class Viewer {
     requestAnimationFrame(this.animate.bind(this))
     this.renderer.render(this.scene, this.camera)
     this.controls.update()
+    this.hatchingMaterial.uniforms.time.value += 0.02
   }
 
-  addContainer(container: Types.Container) {
-    const geometry = new THREE.BoxGeometry(1000, 10, 1000)
-    const material = new THREE.MeshMatcapMaterial({ color: 0xff0000 })
-    const plane = new THREE.Mesh(geometry, material)
-    plane.position.y = -10
-    this.scene.add(plane)
-    console.log(container)
+  selectContainer(container: Types.Container) {
+    this.selectedContainer = new ContainerSpaceEntity(container)
+    this.scene.add(this.selectedContainer.group)
   }
-  removeContainer(container: Types.Container) {}
+  unselectContainer() {
+    if (this.selectedContainer) {
+      this.scene.remove(this.selectedContainer.group)
+    }
+  }
 
   mount(div: HTMLDivElement) {
     this.DOMElement = div
