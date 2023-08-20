@@ -99,28 +99,32 @@ export const useViewerStore = defineStore('viewer', {
     },
 
     addEmptyContainer(
-      container: Omit<Types.Container, 'id' | 'object_type'>
+      container: Omit<Types.Container, 'id' | 'object_type' | 'boxes'>
     ): Types.Container | null {
+      console.log(container)
       if (this.file) {
         const count = this.file.containers.push({
+          ...container,
           id: v4(),
           object_type: 'CONTAINER',
-          ...container
+          boxes: []
         })
         return this.file.containers[count - 1]
       }
       return null
     },
 
-    addLooseBox(box: Omit<Types.Box, 'id' | 'container_id' | 'object_type' | 'position' | 'rotate'>): Types.Box | null {
+    addLooseBox(
+      box: Omit<Types.Box, 'id' | 'container_id' | 'object_type' | 'position' | 'rotate'>
+    ): Types.Box | null {
       if (this.file) {
         const count = this.file.boxes.push({
           id: v4(),
           object_type: 'BOX',
           container_id: null,
           ...box,
-          position: {x: 0, y: 0, z: 0},
-          rotate: {x_rotate: 0, y_rotate: 0, z_rotate: 0},
+          position: { x: 0, y: 0, z: 0 },
+          rotate: { x_rotate: 0, y_rotate: 0, z_rotate: 0 }
         })
         return this.file.boxes[count - 1]
       }

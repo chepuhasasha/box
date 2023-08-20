@@ -5,31 +5,95 @@ wr_modal(@close='$emit("close")')
     span.add-object_tab(:class='{"add-object_tab__active": tab === "container"}' @click='tab = "container"') Container
     a.add-object_tab(href='http://google.com' target='_blank') How it works?
   .add-object
+    //- NAME 
     .add-object_input(:style='{gridArea: tab === "box" ? "1/1/2/3" : "1/1/2/4"}')
-      e_input(type='text' v-model='form.name' label='Name' contrast='200' :placeholder='`${tab} name`')
+      e_input(
+        type='text'
+        v-model='form.name'
+        label='Name'
+        contrast='200'
+        :placeholder='`${tab} name`'
+        :error='validate.name.$errors[0]?.$message')
+    
+    //- WEIGHT
     .add-object_input(v-show='tab === "box"' :style='{gridArea: "1/3/2/4"}')
-      e_input(type='number' v-model='form.props.weight' label='Weight' contrast='200' placeholder='kg')
+      e_input(
+        type='number'
+        v-model='form.props.weight'
+        label='Weigh'
+        contrast='200'
+        placeholder='kg'
+        :error='validate.props.weight.$errors[0]?.$message')
+
+    //- GEOMETRY
     .add-object_input(:style='{gridArea: "2/1/3/2"}')
-      e_input(type='number' v-model='form.geometry.x' label='width' contrast='200' placeholder='mm')
-      e_input(type='number' v-model='form.geometry.y' label='height' contrast='200' placeholder='mm')
-      e_input(type='number' v-model='form.geometry.z' label='depth' contrast='200' placeholder='mm')
+      e_input(
+        type='number'
+        v-model='form.geometry.width'
+        label='width' contrast='200'
+        placeholder='mm'
+        :error='validate.geometry.width.$errors[0]?.$message')
+      e_input(
+        type='number'
+        v-model='form.geometry.height'
+        label='height' contrast='200'
+        placeholder='mm'
+        :error='validate.geometry.height.$errors[0]?.$message')
+      e_input(
+        type='number'
+        v-model='form.geometry.depth' 
+        label='depth' contrast='200'
+        placeholder='mm'
+        :error='validate.geometry.depth.$errors[0]?.$message')
+
+    //- ROTATE LIMITS 
     .add-object_input(v-show='tab === "box"' :style='{gridArea: "2/3/3/4"}')
-      e_input(type='number' v-model='form.props.rotate_limits.x_rotate' label='x rotate' contrast='200' placeholder='deg')
-      e_input(type='number' v-model='form.props.rotate_limits.y_rotate' label='y rotate' contrast='200' placeholder='deg')
-      e_input(type='number' v-model='form.props.rotate_limits.z_rotate' label='z rotate' contrast='200' placeholder='deg')
+      e_input(
+        type='number'
+        v-model='form.props.rotate_limits.x_rotate'
+        label='x rotate'
+        contrast='200' placeholder='deg'
+        :error='validate.props.rotate_limits.x_rotate.$errors[0]?.$message')
+      e_input(
+        type='number'
+        v-model='form.props.rotate_limits.y_rotate'
+        label='y rotate'
+        contrast='200' placeholder='deg'
+        :error='validate.props.rotate_limits.y_rotate.$errors[0]?.$message')
+      e_input(
+        type='number'
+        v-model='form.props.rotate_limits.z_rotate'
+        label='z rotate'
+        contrast='200' placeholder='deg'
+        :error='validate.props.rotate_limits.z_rotate.$errors[0]?.$message')
+    
+    //- COPIES
     .add-object_input(:style='{gridArea: "3/1/4/2"}')
-      e_input(type='number' v-model='form.copies' label='copies' contrast='200' placeholder='1')
+      e_input(
+        type='number'
+        v-model='form.copies'
+        label='copies'
+        contrast='200'
+        placeholder='1'
+        min='1'
+        :error='validate.copies.$errors[0]?.$message')
+  
     e_button(
       :style='{gridArea: "3/2/4/4"}'
       @click="add"
       fill size='l' :icons='[null, "plus"]') ADD {{ tab.toUpperCase()  }}
 </template>
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { watch, ref, reactive } from 'vue'
 import { useViewerStore } from '@/viewer'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minValue } from '@vuelidate/validators'
+import type { Types } from '@box/adapter'
 
 const tab = ref<'box' | 'container'>('box')
-const form = ref({
+const emit = defineEmits(['close'])
+const viewerStore = useViewerStore()
+const form = reactive({
   geometry: {
     width: null,
     height: null,
@@ -46,24 +110,44 @@ const form = ref({
     }
   }
 })
-const viewerStore = useViewerStore()
-const emit = defineEmits(['close'])
-// const validate = computed(() => {
-//   return form.value.name && form.value.
-// })
-const add = () => {
-  if (tab.value === 'box') {
-    viewerStore.addLooseBox({
-      // @ts-ignore
-      name: form.value.name,
-      // @ts-ignore
-      geometry: form.value.geometry,
-      // @ts-ignore
-      props: form.value.props
-    })
-    
+const boxProp = helpers.withMessage('The title is already taken', (value: string) => {
+  if (tab.value === 'box' && !value) {
+    return false
   }
-  emit('close')
+  return true
+})
+const validate = useVuelidate(
+  {
+    geometry: {
+      width: { required },
+      height: { required },
+      depth: { required }
+    },
+    name: { required },
+    copies: { required, minValueValue: minValue(1) },
+    props: {
+      weight: { boxProp },
+      rotate_limits: {
+        x_rotate: { boxProp },
+        y_rotate: { boxProp },
+        z_rotate: { boxProp }
+      }
+    }
+  },
+  form
+)
+
+const add = async () => {
+  const valid = await validate.value.$validate()
+  if (valid) {
+    if (tab.value === 'box') {
+      viewerStore.addLooseBox(form as unknown as Types.Box)
+      emit('close')
+    } else if (tab.value === 'container') {
+      viewerStore.addEmptyContainer(form as unknown as Types.Container)
+      emit('close')
+    }
+  }
 }
 </script>
 <style lang="sass">

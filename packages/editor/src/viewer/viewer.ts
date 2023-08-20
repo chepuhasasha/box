@@ -50,6 +50,9 @@ export class Viewer {
     watch(
       () => this.store.selected.container,
       (n, o) => {
+        if(o) {
+          this.unselectContainer()
+        }
         if (n) {
           this.selectContainer(n)
         } else {

@@ -1,10 +1,10 @@
 <template lang="pug">
-.input(:class='[`input__contrast_${contrast}`]')
+.input(:class='{[`input__contrast_${contrast}`]: true, input__error: error ? true : false}')
   label(v-if='label' :for='label') {{ label }}
   .input_message(v-if='message') {{ message  }}
   .input_content
     w_icon.input_icon(v-if='icon' :name='icon')
-    input(:name='label' @input='update' :value="modelValue" v-bind='$attrs')
+    input(:name='label' @input='update' :value="modelValue" v-bind='$attrs' :type='type')
     slot
 </template>
 <script lang="ts" setup>
@@ -12,16 +12,22 @@ import type { PropType } from 'vue'
 
 const props = defineProps({
   icon: { type: String as PropType<string>, default: null },
-  contrast: { type: String as PropType<"100" | "200" | "300">, default: '100' },
+  contrast: { type: String as PropType<'100' | '200' | '300'>, default: '100' },
   message: { type: String as PropType<string>, default: null },
   label: { type: String as PropType<string>, default: null },
-  modelValue: { type: String as PropType<string>, default: null }
+  modelValue: { type: [String, Number] as PropType<string | number>, default: null },
+  type: { type: String as PropType<'text' | 'number'>, default: 'text' },
+  error: { type: String as PropType<string>, default: null }
 })
 
 const emit = defineEmits(['update:modelValue'])
-const update = (e: {target: HTMLInputElement}) => {
+const update = (e: { target: HTMLInputElement }) => {
   const result = e.target.value.trim()
-  emit('update:modelValue', result)
+  if (props.type === 'number') {
+    emit('update:modelValue', +result)
+  } else {
+    emit('update:modelValue', result)
+  }
 }
 </script>
 <style lang="sass">
@@ -66,5 +72,15 @@ const update = (e: {target: HTMLInputElement}) => {
       outline: 2px solid var(--interactive-color-100)
     &::placeholder
       color: var(--text-color-300)
-      
+
+  &__error
+    input
+      background: var(--danger-color-transparent)
+      color: var(--danger-color-100)
+      &:focus
+        outline: 2px solid var(--danger-color-100)
+      &::placeholder
+        color: var(--danger-color-transparent)
+    label
+      color: var(--danger-color-100)
 </style>

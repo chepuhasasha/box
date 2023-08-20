@@ -1,6 +1,8 @@
 <template lang="pug">
-.container_wrapper(v-if='container' :class='classes')
-  .container
+.container_wrapper(
+  v-if='container'
+  :class='classes')
+  .container(@click='viewerStore.select(container)')
     .container_info 
       span {{ container.name  }}
       w_util(:value='utilization')
@@ -33,6 +35,7 @@ const utilization = computed(() => {
 </script>
 <style lang="sass">
 .container
+  cursor: pointer
   display: flex
   align-items: center
   gap: 10px

@@ -82,7 +82,7 @@ onUnmounted(() => {
 
   &_list
     grid-area: 2/1/3/2
-
+    width: 300px
     display: flex
     flex-direction: column
     gap: 2px
