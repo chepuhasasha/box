@@ -20,7 +20,7 @@ export const shaders = {
       vec2 rotatedUV = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * uv;
   
       // Создание штриховки
-      float stripeDensity = 30.0; // Плотность штриховки
+      float stripeDensity = 10.0; // Плотность штриховки
       float stripeValue = mod(rotatedUV.y * stripeDensity + time, 1.0);
   
       // Красные линии
@@ -31,9 +31,9 @@ export const shaders = {
       // Красные линии
       vec3 stripeColor = vec3(1.0, 0.0, 0.0); // Красный цвет
   
-      vec3 finalColor = mix(vec3(1.0), stripeColor, step(threshold, stripeValue));
+      vec3 finalColor = mix(vec3(0.0), stripeColor, step(threshold, stripeValue));
   
-      gl_FragColor = vec4(finalColor, 0.8);
+      gl_FragColor = vec4(finalColor, step(threshold, stripeValue));
     }
     `
   }

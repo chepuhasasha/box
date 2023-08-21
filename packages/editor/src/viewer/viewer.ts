@@ -26,8 +26,8 @@ export class Viewer {
       background: number
       grid: [number, number, number, number]
     } = {
-      background: 0xf0f6fc,
-      grid: [10000, 100, 0x7d8590, 0xc9d1d9]
+      background: 0xF0F6FC,
+      grid: [10000, 100, 0x7D8590, 0xC9D1D9]
     }
   ) {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -37,7 +37,11 @@ export class Viewer {
     this.scene.background = new THREE.Color(options.background)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.1
-
+    this.controls.maxPolarAngle = Math.PI / 2
+    this.controls.maxZoom = 2
+    this.controls.minZoom = 0.5
+    // this.controls.minAzimuthAngle = 0
+    // this.controls.maxAzimuthAngle = Math.PI / 2
     watch(
       () => this.store.selected.container,
       (n, o) => {

@@ -9,9 +9,9 @@ export class BoxSpaceEntity {
   materials = {
     hover: new THREE.MeshMatcapMaterial({ color: 0x1f6feb, transparent: true, opacity: 0.5 }),
     base: new THREE.MeshMatcapMaterial({
-      color: 0xC9D1D9,
+      color: 0xE4BB93,
       transparent: true,
-      opacity: 0.5
+      opacity: 1
     })
   }
   store = useViewerStore()
@@ -29,7 +29,7 @@ export class BoxSpaceEntity {
     this.mesh.position.x = box.position.x
     this.mesh.position.y = box.position.y + box.geometry.height / 2
     this.mesh.position.z = box.position.z
-    this.boxHelper = new THREE.BoxHelper(this.mesh, 0x010409)
+    this.boxHelper = new THREE.BoxHelper(this.mesh, 0xC9D1D9)
     this.group.add(this.mesh, this.boxHelper)
 
     watch(() => ({
@@ -81,6 +81,6 @@ export class BoxSpaceEntity {
     this.boxHelper.material.color = new THREE.Color(0x1f6feb)
   }
   unhover() {
-    this.boxHelper.material.color = new THREE.Color(0x010409)
+    this.boxHelper.material.color = new THREE.Color(0xC9D1D9)
   }
 }

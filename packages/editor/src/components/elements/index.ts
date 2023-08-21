@@ -4,6 +4,9 @@ import IconButtonVue from './IconButton.vue'
 import UserVue from './User.vue'
 import InputVue from './Input.vue'
 import DropdownVue from './Dropdown.vue'
+import BoxVue from './Box.vue'
+import ContainerVue from './Container.vue'
+import FileListItemVue from './FileListItem.vue'
 
 export default {
   install(vue: App) {
@@ -12,5 +15,8 @@ export default {
     vue.component('e_user', UserVue)
     vue.component('e_input', InputVue)
     vue.component('e_drop', DropdownVue)
+    vue.component('e_box', BoxVue)
+    vue.component('e_container', ContainerVue)
+    vue.component('e_filelistitem', FileListItemVue)
   }
 }

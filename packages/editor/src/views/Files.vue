@@ -15,7 +15,7 @@ wr_page.files
           span create a new cargo loading file
       .files_head_search
         e_input(v-model='search' placeholder='start typing the file name...' icon='search')
-  FileListItem(v-for='file in filtred' :key='file.id' :file='file')
+  e_filelistitem(v-for='file in filtred' :key='file.id' :file='file')
 
 Teleport(to='body')
   wr_modal(v-if='newFileModal' name='New file' @close='newFileModal = false')
@@ -31,7 +31,6 @@ Teleport(to='body')
       e_button(size='l' :icons='[null, "plus"]' fill :disable='filename ? false : true' @click='createFile') CREATE
 </template>
 <script lang="ts" setup>
-import FileListItem from './components/elements/FileListItem.vue'
 import { useFilesStore } from '@/stores'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'

@@ -13,9 +13,8 @@ export class ContainerSpaceEntity {
   basicMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 
   constructor(public container: Types.Container) {
-    const outGeometry = new THREE.BoxGeometry(
+    const outGeometry = new THREE.PlaneGeometry(
       container.geometry.width + 400,
-      1,
       container.geometry.depth + 400
     )
     const innerGeometry = new THREE.BoxGeometry(
@@ -25,18 +24,20 @@ export class ContainerSpaceEntity {
     )
     const heightGeometry = new THREE.CylinderGeometry(4, 4, container.geometry.height)
     const outMesh = new THREE.Mesh(outGeometry, this.hatchingMaterial)
+    outMesh.rotateX(-Math.PI / 2)
     const innerMesh = new THREE.Mesh(
       innerGeometry,
-      new THREE.MeshBasicMaterial({ color: 0xF0F6FC })
+      new THREE.MeshBasicMaterial({ color: 0xf0f6fc })
     )
     const heightMesh = new THREE.Mesh(heightGeometry, this.basicMaterial)
     outMesh.position.y = -2
-    innerMesh.position.y = -2
+    innerMesh.position.y = -1
     heightMesh.position.y = container.geometry.height / 2
     // heightMesh.position.x = container.geometry.width / -2
     // heightMesh.position.z = container.geometry.depth / -2
     this.group = new THREE.Group()
     this.group.add(outMesh, innerMesh, heightMesh)
+
     return this
   }
 

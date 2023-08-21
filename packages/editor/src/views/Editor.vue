@@ -13,11 +13,11 @@
     span {{ viewerStore.file.name  }}
     e_icon_button(name='plus' contrast='200' @click='show.add_object = true')
   .editor_list
-    editor_e_box(
+    e_box(
       v-for='box in viewerStore.looseBoxes'
       :key="box.id" 
       :box='box')
-    editor_e_container(
+    e_container(
       v-for='container in viewerStore.file.containers'
       :key="container.id"
       :container='container')
@@ -26,7 +26,7 @@
     
 
 Teleport(to='body')
-  editor_m_add_object(v-if='show.add_object' @close='show.add_object = false')
+  m_add_object(v-if='show.add_object' @close='show.add_object = false')
 </template>
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'

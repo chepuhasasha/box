@@ -9,7 +9,7 @@
     e_icon_button(name='settings' contrast='300')
     e_icon_button(:name='isOpen ? "up" : "down"' @click='isOpen = !isOpen' contrast='300')
   .container_childs(v-show='isOpen')
-    editor_e_box(
+    e_box(
       v-for='box in viewerStore.boxesByContainerId(container.id)'
       :key='box.id'
       :box='box'

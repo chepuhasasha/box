@@ -27,7 +27,7 @@ import { useRouter } from 'vue-router'
 import { Types } from '@box/adapter'
 import { useUserStore } from '@/stores'
 import QRCode from 'qrcode'
-import { encrypt, decrypt } from '@/engine'
+// import { encrypt, decrypt } from '@/engine'
 
 const props = defineProps({
   file: {
@@ -50,18 +50,18 @@ const blur = () => {
 }
 
 const generateQRCode = () => {
-  if (canvas.value) {
-    const code = encrypt(props.file, qrKey.value)
-    QRCode.toCanvas(canvas.value, 'http://192.168.0.229:5173/viewer/' + code, {
-      width: 500,
-      color: {
-        dark: '#010409ff',
-        light: '#f0f6fcff'
-      },
-      margin: 2
-    })
-    // qrKey.value = ''
-  }
+  // if (canvas.value) {
+  //   const code = encrypt(props.file, qrKey.value)
+  //   QRCode.toCanvas(canvas.value, 'http://192.168.0.229:5173/viewer/' + code, {
+  //     width: 500,
+  //     color: {
+  //       dark: '#010409ff',
+  //       light: '#f0f6fcff'
+  //     },
+  //     margin: 2
+  //   })
+  //   // qrKey.value = ''
+  // }
 }
 
 const router = useRouter()
