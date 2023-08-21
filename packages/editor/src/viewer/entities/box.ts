@@ -32,6 +32,18 @@ export class BoxSpaceEntity {
     this.boxHelper = new THREE.BoxHelper(this.mesh, 0x010409)
     this.group.add(this.mesh, this.boxHelper)
 
+    watch(() => ({
+      x: box.position.x,
+      y: box.position.y,
+      z: box.position.z,
+    }), (n, o) => {
+      console.log(n)
+      this.mesh.position.x = box.position.x
+      this.mesh.position.y = box.position.y + box.geometry.height / 2
+      this.mesh.position.z = box.position.z
+      this.boxHelper.update()
+    })
+
     watch(
       () => ({
         hovered: this.store.hovered.box,
