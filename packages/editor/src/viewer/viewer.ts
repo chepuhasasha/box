@@ -99,6 +99,7 @@ export class Viewer {
     this.camera.bottom = rect.height / -2
     this.camera.near = -10000
     this.camera.far = 10000
+    this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize(rect.width, rect.height)
     this.camera.position.set(1000, 1000, 1000)
     this.camera.updateProjectionMatrix()

@@ -35,6 +35,7 @@ export class PointerTool implements ViewerTool {
     dir.set(0, 0, -1).transformDirection(this.viewer.camera.matrixWorld)
     this.raycaster.set(vector, dir)
     const intersects = this.raycaster.intersectObjects(this.viewer.scene.children, true)
+    // console.log(intersects[0]?.point)
     return this.viewer.boxes.find((box) => intersects.some((e) => e.object.uuid === box.mesh.uuid))
   }
 
@@ -43,7 +44,9 @@ export class PointerTool implements ViewerTool {
     const selected = this.setRay(e)
     if (selected) {
       this.viewer.store.selected.box = selected.box
+      this.viewer.controls.enableRotate = false
     }
+    // rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
   }
 
   onPointerup(e: PointerEvent) {
@@ -51,6 +54,7 @@ export class PointerTool implements ViewerTool {
     const selected = this.setRay(e)
     this.viewer.store.selected.box = selected ? selected.box : null
     this.viewer.store.hovered.box = selected ? selected.box : null
+    this.viewer.controls.enableRotate = true
   }
 
   onPointermove(e: PointerEvent) {
