@@ -1,10 +1,9 @@
-import { shaders } from './shaders'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { useViewerStore } from '.'
 import { watch } from 'vue'
 import { Types } from '@box/adapter'
-import { ContainerSpaceEntity } from './entities'
+import { BoxSpaceEntity, ContainerSpaceEntity } from './entities'
 
 export interface ViewerTool {
   install: (viewer: Viewer) => void
@@ -19,20 +18,16 @@ export class Viewer {
   controls: OrbitControls
   grid: THREE.GridHelper
   store = useViewerStore()
-  hatchingMaterial = new THREE.ShaderMaterial({
-    vertexShader: shaders.hatching.v,
-    fragmentShader: shaders.hatching.f,
-    uniforms: { time: { value: 0.0 }, lineWidth: { value: 1.8 } }
-  })
-  selectedContainer: ContainerSpaceEntity | null = null
+  container: ContainerSpaceEntity | null = null
+  boxes: BoxSpaceEntity[] = []
 
   constructor(
     options: {
       background: number
       grid: [number, number, number, number]
     } = {
-      background: 0x010409,
-      grid: [10000, 100, 0x181C22, 0x0D1117]
+      background: 0xf0f6fc,
+      grid: [10000, 100, 0x7d8590, 0xc9d1d9]
     }
   ) {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -43,33 +38,17 @@ export class Viewer {
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.1
 
-    this.initWatchers()
-  }
-
-  initWatchers() {
     watch(
       () => this.store.selected.container,
       (n, o) => {
-        if(o) {
-          this.unselectContainer()
+        if (o) {
+          this.removeContainer()
         }
         if (n) {
-          this.selectContainer(n)
+          this.addContainer(n)
         } else {
-          this.unselectContainer()
+          this.removeContainer()
         }
-      }
-    )
-    watch(
-      () => this.store.selected.box,
-      (n, o) => {
-        // console.log(n)
-      }
-    )
-    watch(
-      () => this.store.hovered.box,
-      (n, o) => {
-        // console.log(n)
       }
     )
   }
@@ -78,16 +57,22 @@ export class Viewer {
     requestAnimationFrame(this.animate.bind(this))
     this.renderer.render(this.scene, this.camera)
     this.controls.update()
-    this.hatchingMaterial.uniforms.time.value += 0.02
+    if (this.container) {
+      this.container.tick()
+    }
   }
 
-  selectContainer(container: Types.Container) {
-    this.selectedContainer = new ContainerSpaceEntity(container)
-    this.scene.add(this.selectedContainer.group)
+  addContainer(container: Types.Container) {
+    this.container = new ContainerSpaceEntity(container)
+    this.store
+      .boxesByContainerId(container.id)
+      .forEach((box) => this.boxes.push(new BoxSpaceEntity(box)))
+    this.scene.add(this.container.group, ...this.boxes.map((box) => box.group))
   }
-  unselectContainer() {
-    if (this.selectedContainer) {
-      this.scene.remove(this.selectedContainer.group)
+
+  removeContainer() {
+    if (this.container) {
+      this.scene.remove(this.container.group)
     }
   }
 
@@ -115,7 +100,7 @@ export class Viewer {
     this.camera.near = -10000
     this.camera.far = 10000
     this.renderer.setSize(rect.width, rect.height)
-    this.camera.position.set(10, 10, 10)
+    this.camera.position.set(1000, 1000, 1000)
     this.camera.updateProjectionMatrix()
   }
 

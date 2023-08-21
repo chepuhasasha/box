@@ -2,7 +2,7 @@
 .container_wrapper(
   v-if='container'
   :class='classes')
-  .container(@click='viewerStore.select(container)')
+  .container(@click='viewerStore.select(container)' :title='container.name')
     .container_info 
       span {{ container.name  }}
       w_util(:value='utilization')

@@ -31,7 +31,7 @@ Teleport(to='body')
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { Viewer, useViewerStore } from '@/viewer'
+import { Viewer, PointerTool, useViewerStore } from '@/viewer'
 
 const viewerStore = useViewerStore()
 viewerStore.openFile(useRoute().params.id.toString())
@@ -42,6 +42,8 @@ const show = ref({
 
 const viewerDiv = ref<HTMLDivElement | null>(null)
 const VIEWER = new Viewer()
+const POINTER = new PointerTool()
+VIEWER.use(POINTER)
 
 onMounted(() => {
   if (viewerDiv.value) {

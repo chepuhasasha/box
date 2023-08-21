@@ -31,7 +31,7 @@ export const shaders = {
       // Красные линии
       vec3 stripeColor = vec3(1.0, 0.0, 0.0); // Красный цвет
   
-      vec3 finalColor = mix(vec3(0.0), stripeColor, step(threshold, stripeValue));
+      vec3 finalColor = mix(vec3(1.0), stripeColor, step(threshold, stripeValue));
   
       gl_FragColor = vec4(finalColor, 0.8);
     }

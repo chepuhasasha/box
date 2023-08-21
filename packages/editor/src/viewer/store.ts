@@ -32,9 +32,9 @@ export const useViewerStore = defineStore('viewer', {
             },
             name: 'Test box',
             position: {
-              x: 0,
+              x: -200,
               y: 0,
-              z: 0
+              z: 200
             },
             rotate: {
               x_rotate: 0,
@@ -101,7 +101,6 @@ export const useViewerStore = defineStore('viewer', {
     addEmptyContainer(
       container: Omit<Types.Container, 'id' | 'object_type' | 'boxes'>
     ): Types.Container | null {
-      console.log(container)
       if (this.file) {
         const count = this.file.containers.push({
           ...container,
@@ -158,7 +157,9 @@ export const useViewerStore = defineStore('viewer', {
         this.selected.box = object
         if (this.file) {
           const container = this.file.containers.find((c) => c.id === object.container_id)
-          this.selected.container = container ? container : null
+          if(container) {
+            this.selected.container = container
+          }
         }
       } else if (object.object_type === 'CONTAINER') {
         this.selected.container = object

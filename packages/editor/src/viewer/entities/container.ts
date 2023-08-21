@@ -12,10 +12,7 @@ export class ContainerSpaceEntity {
   })
   basicMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 
-  constructor(container: Types.Container) {
-    // setInterval(() => {
-    //   this.hatchingMaterial.uniforms.time.value += 0.001
-    // }, 10)
+  constructor(public container: Types.Container) {
     const outGeometry = new THREE.BoxGeometry(
       container.geometry.width + 400,
       1,
@@ -30,15 +27,20 @@ export class ContainerSpaceEntity {
     const outMesh = new THREE.Mesh(outGeometry, this.hatchingMaterial)
     const innerMesh = new THREE.Mesh(
       innerGeometry,
-      new THREE.MeshBasicMaterial({ color: 0x010409 })
+      new THREE.MeshBasicMaterial({ color: 0xF0F6FC })
     )
     const heightMesh = new THREE.Mesh(heightGeometry, this.basicMaterial)
     outMesh.position.y = -2
     innerMesh.position.y = -2
     heightMesh.position.y = container.geometry.height / 2
-    heightMesh.position.x = container.geometry.width / -2
-    heightMesh.position.z = container.geometry.depth / -2
+    // heightMesh.position.x = container.geometry.width / -2
+    // heightMesh.position.z = container.geometry.depth / -2
     this.group = new THREE.Group()
     this.group.add(outMesh, innerMesh, heightMesh)
+    return this
+  }
+
+  tick() {
+    this.hatchingMaterial.uniforms.time.value += 0.01
   }
 }
