@@ -33,6 +33,7 @@ onMounted(() => {
   background: var(--background-color-100)
   border: 1px solid var(--background-color-200)
   border-top: none
+  border-bottom: none
 
   &_head
     display: flex

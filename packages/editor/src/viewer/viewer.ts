@@ -26,8 +26,8 @@ export class Viewer {
       background: number
       grid: [number, number, number, number]
     } = {
-      background: 0xF0F6FC,
-      grid: [10000, 100, 0x7D8590, 0xC9D1D9]
+      background: 0xFFFFFF,
+      grid: [10000, 100, 0xc9d1d9, 0xF0F6FC]
     }
   ) {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)

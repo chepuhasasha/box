@@ -11,7 +11,7 @@ wr_modal(@close='$emit("close")')
         type='text'
         v-model='form.name'
         label='Name'
-        contrast='200'
+        contrast='100'
         :placeholder='`${tab} name`'
         :error='validate.name.$errors[0]?.$message')
     
@@ -21,7 +21,7 @@ wr_modal(@close='$emit("close")')
         type='number'
         v-model='form.props.weight'
         label='Weigh'
-        contrast='200'
+        contrast='100'
         placeholder='kg'
         :error='validate.props.weight.$errors[0]?.$message')
 
@@ -30,19 +30,19 @@ wr_modal(@close='$emit("close")')
       e_input(
         type='number'
         v-model='form.geometry.width'
-        label='width' contrast='200'
+        label='width' contrast='100'
         placeholder='mm'
         :error='validate.geometry.width.$errors[0]?.$message')
       e_input(
         type='number'
         v-model='form.geometry.height'
-        label='height' contrast='200'
+        label='height' contrast='100'
         placeholder='mm'
         :error='validate.geometry.height.$errors[0]?.$message')
       e_input(
         type='number'
         v-model='form.geometry.depth' 
-        label='depth' contrast='200'
+        label='depth' contrast='100'
         placeholder='mm'
         :error='validate.geometry.depth.$errors[0]?.$message')
 
@@ -52,19 +52,19 @@ wr_modal(@close='$emit("close")')
         type='number'
         v-model='form.props.rotate_limits.x_rotate'
         label='x rotate'
-        contrast='200' placeholder='deg'
+        contrast='100' placeholder='deg'
         :error='validate.props.rotate_limits.x_rotate.$errors[0]?.$message')
       e_input(
         type='number'
         v-model='form.props.rotate_limits.y_rotate'
         label='y rotate'
-        contrast='200' placeholder='deg'
+        contrast='100' placeholder='deg'
         :error='validate.props.rotate_limits.y_rotate.$errors[0]?.$message')
       e_input(
         type='number'
         v-model='form.props.rotate_limits.z_rotate'
         label='z rotate'
-        contrast='200' placeholder='deg'
+        contrast='100' placeholder='deg'
         :error='validate.props.rotate_limits.z_rotate.$errors[0]?.$message')
     
     //- COPIES
@@ -73,7 +73,7 @@ wr_modal(@close='$emit("close")')
         type='number'
         v-model='form.copies'
         label='copies'
-        contrast='200'
+        contrast='100'
         placeholder='1'
         min='1'
         :error='validate.copies.$errors[0]?.$message')
@@ -159,7 +159,7 @@ const add = async () => {
   width: 400px
   max-width: 100vw
 
-  background: var(--background-color-300)
+  background: var(--background-color-200)
   &_tab
     cursor: pointer
     font-size: 14px
@@ -176,5 +176,5 @@ const add = async () => {
     flex-direction: column
     gap: 10px
     padding: 10px
-    background: var(--background-color-200)
+    background: var(--background-color-100)
 </style>

@@ -24,7 +24,7 @@ export class PointerTool implements ViewerTool {
   addShadow(box: Types.Box) {
     if (!this.viewer) return null
     const geometry = new THREE.BoxGeometry(box.geometry.width, box.geometry.height, box.geometry.depth)
-    const material = new THREE.MeshMatcapMaterial({ color: 0xff0000, transparent: true, opacity: 0.5 })
+    const material = new THREE.MeshMatcapMaterial({color: 0xffffff, transparent: true, opacity: 1 })
     this.shadow = new THREE.Mesh(geometry, material)
     this.shadow.position.x = box.position.x
     this.shadow.position.y = box.position.y + box.geometry.height / 2
@@ -55,11 +55,12 @@ export class PointerTool implements ViewerTool {
     dir.set(0, 0, -1).transformDirection(this.viewer.camera.matrixWorld)
     this.raycaster.set(vector, dir)
     const intersects = this.raycaster.intersectObjects(this.viewer.scene.children, true)
+    // console.log(intersects)
     return {
       object: this.viewer.boxes.find((box) =>
         intersects.some((e) => e.object.uuid === box.mesh.uuid)
       ),
-      point: intersects[0]?.point
+      point: intersects[1]?.point
     }
   }
 
@@ -91,8 +92,10 @@ export class PointerTool implements ViewerTool {
   onPointermove(e: PointerEvent) {
     if (!this.viewer) return
     const ray = this.setRay(e)
-    if (this.shadow && ray.point) {
-      this.shadow.position.copy(ray.point)
+    if (this.shadow && ray.point && ray.object) {
+      this.shadow.position.x = ray.point.x
+      this.shadow.position.y = ray.point.y
+      this.shadow.position.z = ray.point.z
     }
     this.viewer.store.hovered.box = ray.object ? ray.object.box : null
   }

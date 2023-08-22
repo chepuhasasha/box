@@ -27,11 +27,11 @@ export class ContainerSpaceEntity {
     outMesh.rotateX(-Math.PI / 2)
     const innerMesh = new THREE.Mesh(
       innerGeometry,
-      new THREE.MeshBasicMaterial({ color: 0xf0f6fc })
+      new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
     )
     const heightMesh = new THREE.Mesh(heightGeometry, this.basicMaterial)
-    outMesh.position.y = -2
-    innerMesh.position.y = -1
+    outMesh.position.y = -3
+    innerMesh.position.y = -2
     heightMesh.position.y = container.geometry.height / 2
     // heightMesh.position.x = container.geometry.width / -2
     // heightMesh.position.z = container.geometry.depth / -2

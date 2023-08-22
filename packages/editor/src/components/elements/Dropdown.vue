@@ -55,7 +55,7 @@ onMounted(() => {
   padding: 0
   border: none
   &:focus-visible
-    outline: 2px solid var(--interactive-color-200)
+    outline: 2px solid var(--interactive-color-bg)
   &_body
     min-width: 170px
     position: absolute
@@ -65,7 +65,7 @@ onMounted(() => {
     gap: 5px
     padding: 10px
     top: calc(100% + 10px)
-    background: var(--background-color-200)
-    border: 1px solid var(--background-color-400)
+    background: var(--background-color-100)
+    border: 1px solid var(--background-color-200)
     border-radius: 10px
 </style>

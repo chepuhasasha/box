@@ -2,6 +2,7 @@
 .utilization
   .utilization_wrapp(:style='{borderColor: style.borderColor}')
     .utilization_value(:style='style')
+    .utilization_line(:style='{borderColor: style.borderColor}')
   span(:style='{color: style.borderColor}') {{ value }}%
 </template>
 <script lang="ts" setup>
@@ -20,7 +21,7 @@ const style = computed(() => {
   const current = [Math.floor(red), Math.floor(green), 0]
   return {
     borderColor: `rgb(${current[0]},${current[1]},${current[2]})`,
-    background: `repeating-linear-gradient(-45deg, rgb(${current[0]},${current[1]},${current[2]}) 0, rgb(${current[0]},${current[1]},${current[2]}) 1px, transparent 2px, transparent 6px)`,
+    background: `repeating-linear-gradient(-45deg, rgb(${current[0]},${current[1]},${current[2]}) 0, rgb(${current[0]},${current[1]},${current[2]}) 1px, transparent 2px, transparent 4px)`,
     width: `${props.value}%`
   }
 })
@@ -37,13 +38,18 @@ const style = computed(() => {
   &_wrapp
     width: 100%
     height: 6px
-    border-bottom: 1px solid var(--interactive-color-100)
+    display: flex
+    align-items: center
   &_value
     width: 50%
     transition: all ease 0.3s
-    border-top: 1px solid var(--interactive-color-100)
-    border-left: 1px solid var(--interactive-color-100)
-    border-right: 1px solid var(--interactive-color-100)
-    background: repeating-linear-gradient(-45deg, var(--interactive-color-100) 0, var(--interactive-color-100) 1px, transparent 2px, transparent 6px)
+    border-left: 4px solid var(--interactive-color-bg)
+    border-right: 4px solid var(--interactive-color-bg)
+    background: none
     height: 100%
+
+  &_line
+    width: 100%
+    height: 1px
+    border-bottom: 1px solid red
 </style>

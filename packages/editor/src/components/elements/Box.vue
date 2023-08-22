@@ -14,10 +14,10 @@
     ) {{ box.container_id ? "positioned" : "unpositioned" }}
   e_drop(left='-130px')
     template(v-slot:head)
-      e_icon_button(name='settings' contrast='300')
-    e_button(mode="dark" fill :icons='[null, "plus"]') Dublicate
-    e_button(mode="dark" status='danger' fill :icons='[null, "trash"]') Delete
-  e_icon_button(v-if='!box.container_id' name='target' contrast='300')
+      e_icon_button(name='settings' contrast='100')
+    e_button(mode="trans" fill :icons='[null, "plus"]') Dublicate
+    e_button(mode="trans" status='danger' fill :icons='[null, "trash"]') Delete
+  e_icon_button(v-if='!box.container_id' name='target' contrast='100')
 </template>
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
@@ -43,12 +43,13 @@ const classes = computed(() => ({
   display: flex
   gap: 10px
   padding: 10px
-  background: var(--background-color-300)
-  border-left: 4px solid var(--background-color-400)
+  background: var(--background-color-100)
+  border-bottom: 1px solid var(--background-color-200)
+  border-left: 4px solid var(--background-color-300)
   cursor: pointer
 
   &:hover, &__hovered
-    background: var(--background-color-400)
+    background: var(--background-color-200)
 
   &_info
     display: flex
@@ -80,22 +81,13 @@ const classes = computed(() => ({
       left: -14px
       width: 10px
       height:  50%
-      border-bottom: 1px dashed var(--background-color-400)
+      border-bottom: 1px dashed var(--background-color-300)
 
   &__danger
     border-left-color: var(--danger-color-100)
 
   &__selected
-    border-left-color: var(--interactive-color-100) !important
-    &::after
-      content: ''
-      position: absolute
-      top: calc(50% - 2px)
-      left: -16px
-      width: 4px
-      height:  4px
-      border-radius: 1px
-      background: var(--interactive-color-100)
+    border-left-color: var(--interactive-color-bg) !important
     &::before
-      border-color: var(--interactive-color-100)
+      border-color: var(--interactive-color-bg)
 </style>

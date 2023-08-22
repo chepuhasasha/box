@@ -37,8 +37,8 @@ const close = () => {
   width: max-content
   display: flex
   flex-direction: column
-  border: 1px solid var(--background-color-300)
-  background: var(--background-color-200)
+  // border: 1px solid var(--background-color-300)
+  background: var(--background-color-100)
   &_head
     font-size: 14px
     font-weight: 600
@@ -48,7 +48,7 @@ const close = () => {
     gap: 20px
     width: 100%
     padding: 10px 10px 10px 20px
-    border-bottom: 1px solid var(--background-color-300)
+    border-bottom: 1px solid var(--background-color-200)
     &_slot
       display: flex
       align-items: center

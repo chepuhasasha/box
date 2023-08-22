@@ -6,8 +6,8 @@
     .container_info 
       span {{ container.name  }}
       w_util(:value='utilization')
-    e_icon_button(name='settings' contrast='300')
-    e_icon_button(:name='isOpen ? "up" : "down"' @click='isOpen = !isOpen' contrast='300')
+    e_icon_button(name='settings' contrast='100')
+    e_icon_button(:name='isOpen ? "up" : "down"' @click='isOpen = !isOpen' contrast='100')
   .container_childs(v-show='isOpen')
     e_box(
       v-for='box in viewerStore.boxesByContainerId(container.id)'
@@ -41,10 +41,11 @@ const utilization = computed(() => {
   gap: 10px
   width: 100%
   padding: 10px
-  background: var(--background-color-300)
-  border-left: 4px solid var(--background-color-400)
+  background: var(--background-color-100)
+  border-left: 4px solid var(--background-color-300)
+  border-bottom: 1px solid var(--background-color-200)
   &:hover
-    background: var(--background-color-400)
+    background: var(--background-color-200)
     
   &_info
     display: flex
@@ -63,25 +64,12 @@ const utilization = computed(() => {
   &_childs
     position: relative
     margin-left: 20px
-    border-left: 1px dashed var(--background-color-400)
-    padding-top: 2px
-    // border-bottom: 1px dashed var(--background-color-400)
-    &::before
-      content: '',
-      position: absolute
-      top: -3px
-      left: -3px
-      width: 6px
-      height: 6px
-      border-radius: 1px
-      background: var(--background-color-400)
+    border-left: 1px dashed var(--background-color-300)
 
   &__selected
     .container
-      border-left-color: var(--interactive-color-100)
+      border-left-color: var(--interactive-color-bg)
 
     .container_childs
-      border-color: var(--interactive-color-100)
-      &::before
-        background: var(--interactive-color-100)
+      border-color: var(--interactive-color-bg)
 </style>

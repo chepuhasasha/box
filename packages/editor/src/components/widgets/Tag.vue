@@ -22,8 +22,8 @@ defineProps({
 
   &__new
     background: var(--interactive-color-transparent)
-    color: var(--interactive-color-100)
+    color: var(--interactive-color-bg)
   &__pro
     background: var(--pro-gradient)
-    color: var(--background-color-100)
+    color: var(--text-color-100)
 </style>

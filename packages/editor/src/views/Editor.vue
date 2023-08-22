@@ -3,15 +3,15 @@
   .editor_head(:title='viewerStore.file.name')
     e_drop
       template(v-slot:head)
-        e_icon_button(name='menu' contrast='200')
-      e_button(mode="dark" fill) Open
-      e_button(mode="dark" fill :icons='[null, "left"]') Back to files
-      e_button(mode="dark" fill :icons='[null, "save"]') Save
-      e_button(mode="dark" fill :icons='[null, "download"]') Save local
-      e_button(mode="dark" fill :icons='[null, "file"]') View doc
-      e_button(mode="dark" fill :icons='[null, "logout"]') Logout
+        e_icon_button(name='menu' contrast='100')
+      e_button(mode="trans" fill) Open
+      e_button(mode="trans" fill :icons='[null, "left"]') Back to files
+      e_button(mode="trans" fill :icons='[null, "save"]') Save
+      e_button(mode="trans" fill :icons='[null, "download"]') Save local
+      e_button(mode="trans" fill :icons='[null, "file"]') View doc
+      e_button(mode="trans" fill :icons='[null, "logout"]') Logout
     span {{ viewerStore.file.name  }}
-    e_icon_button(name='plus' contrast='200' @click='show.add_object = true')
+    e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
   .editor_list
     e_box(
       v-for='box in viewerStore.looseBoxes'
@@ -72,7 +72,9 @@ onUnmounted(() => {
     padding: 10px
     gap: 10px
 
-    background: var(--background-color-200)
+    background: var(--background-color-100)
+    border-right: 1px solid var(--background-color-200)
+    border-bottom: 1px solid var(--background-color-200)
 
     span
       font-size: 12px
@@ -87,10 +89,11 @@ onUnmounted(() => {
     width: 300px
     display: flex
     flex-direction: column
-    gap: 2px
+    // gap: 2px
     overflow: auto
+    border-right: 1px solid var(--background-color-200)
 
-    background: var(--background-color-200)
+    background: var(--background-color-100)
   &_viewer
     grid-area: 1/2/3/3
 </style>

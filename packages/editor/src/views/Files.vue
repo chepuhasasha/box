@@ -5,18 +5,17 @@ wr_page.files
       .files_head_links
         w_link(to='/') FILES
         w_link(to='/') ABOUT
-        w_link(to='/') GUIDES
+        w_link(to='/') HOW IT WORKS?
         e_icon_button(name='file')
       .files_head_user
         e_user
-      e_button.files_head_new(size='l' fill :icons='[null, "plus"]' mode='dark' @click='newFileModal = true') 
+      e_button.files_head_new(size='l' fill :icons='[null, "plus"]' @click='newFileModal = true') 
         template(v-slot:content) 
           span New file
           span create a new cargo loading file
       .files_head_search
         e_input(v-model='search' placeholder='start typing the file name...' icon='search')
   e_filelistitem(v-for='file in filtred' :key='file.id' :file='file')
-
 Teleport(to='body')
   wr_modal(v-if='newFileModal' name='New file' @close='newFileModal = false')
     .files_new-file-modal
@@ -25,7 +24,6 @@ Teleport(to='body')
           label='file name'
           v-model='filename'
           placeholder='start typing the file name...'
-          contrast='200'
         )
       e_button(size='l' :icons='[null, "cross"]' mode='ghost' fill @click='newFileModal = false') CANCEL
       e_button(size='l' :icons='[null, "plus"]' fill :disable='filename ? false : true' @click='createFile') CREATE

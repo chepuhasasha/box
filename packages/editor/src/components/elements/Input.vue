@@ -69,7 +69,7 @@ const update = (e: { target: HTMLInputElement }) => {
     line-height: 10px
     width: 100%
     &:focus
-      outline: 2px solid var(--interactive-color-100)
+      outline: 2px solid var(--interactive-color-bg)
     &::placeholder
       color: var(--text-color-300)
 
