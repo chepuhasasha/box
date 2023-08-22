@@ -22,7 +22,8 @@ const style = computed(() => {
   return {
     borderColor: `rgb(${current[0]},${current[1]},${current[2]})`,
     background: `repeating-linear-gradient(-45deg, rgb(${current[0]},${current[1]},${current[2]}) 0, rgb(${current[0]},${current[1]},${current[2]}) 1px, transparent 2px, transparent 4px)`,
-    width: `${props.value}%`
+    width: `${props.value}%`,
+    minWidth: `${props.value}%`
   }
 })
 </script>

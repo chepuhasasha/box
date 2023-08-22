@@ -23,6 +23,15 @@
       :container='container')
 
   .editor_viewer(ref='viewerDiv')
+  .editor_tools
+    e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
+    e_drop(left='-130px')
+      template(v-slot:head)
+        e_icon_button(name='eye' )
+      e_button(mode='trans') Home
+      e_button(mode='trans') Top
+      e_button(mode='trans') Front
+      e_button(mode='trans') Left
     
 
 Teleport(to='body')
@@ -77,7 +86,7 @@ onUnmounted(() => {
     border-bottom: 1px solid var(--background-color-200)
 
     span
-      font-size: 12px
+      font-size: 14px
       color: var(--text-color-100)
       width: 100%
       overflow: hidden
@@ -96,4 +105,16 @@ onUnmounted(() => {
     background: var(--background-color-100)
   &_viewer
     grid-area: 1/2/3/3
+  &_tools
+    grid-area: 1/2/2/3
+    display: flex
+    gap: 10px
+    // z-index: 2
+    align-self: center
+    justify-self: center
+    background: rgba(255,255,255, 0.8)
+    border: 1px solid var(--background-color-200)
+    backdrop-filter: blur(5px)
+    padding: 10px
+    border-radius: 0 0 4px 4px
 </style>
