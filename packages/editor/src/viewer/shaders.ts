@@ -10,7 +10,10 @@ export const shaders = {
     f: `
     varying vec2 vUv;
     uniform float time;
-    uniform float lineWidth; // Добавили uniform для ширины линий
+    uniform float density;
+    uniform float r;
+    uniform float g;
+    uniform float b;
   
     void main() {
       vec2 uv = vUv;
@@ -20,16 +23,15 @@ export const shaders = {
       vec2 rotatedUV = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * uv;
   
       // Создание штриховки
-      float stripeDensity = 10.0; // Плотность штриховки
-      float stripeValue = mod(rotatedUV.y * stripeDensity + time, 1.0);
+      float stripeValue = mod(rotatedUV.y * density + time, 1.0);
   
       // Красные линии
-      float threshold = lineWidth / 2.0; // Порог для определения прозрачных областей
-      float lineDistance = abs(mod(rotatedUV.y * stripeDensity + time, 1.0) - 0.5) * 2.0;
+      float threshold = 0.5; // Порог для определения прозрачных областей
+      float lineDistance = abs(mod(rotatedUV.y * density + time, 1.0) - 0.5) * 2.0;
       float alpha = step(threshold, lineDistance);
 
       // Красные линии
-      vec3 stripeColor = vec3(1.0, 0.0, 0.0); // Красный цвет
+      vec3 stripeColor = vec3(r, g, b); // Красный цвет
       vec3 finalColor = mix(vec3(0.0), stripeColor, step(threshold, stripeValue));
   
       gl_FragColor = vec4(finalColor, step(threshold, stripeValue));

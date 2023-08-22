@@ -7,11 +7,22 @@ import { shaders } from '../shaders'
 export class BoxSpaceEntity {
   geometry: THREE.BoxGeometry
   materials = {
-    select: new THREE.MeshMatcapMaterial({ color: 0x1f6feb, transparent: true, opacity: 0.5 }),
-    base: new THREE.MeshMatcapMaterial({
-      color: 0xffffff,
+    select: new THREE.ShaderMaterial({
+      vertexShader: shaders.hatching.v,
+      fragmentShader: shaders.hatching.f,
       transparent: true,
-      opacity: 1
+      uniforms: {
+        time: { value: 0.0 },
+        density: { value: 5 },
+        r: { value: 0.12 },
+        g: { value: 0.44 },
+        b: { value: 0.92 }
+      },
+    }),
+    base: new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      transparent: true,
+      opacity: 0.3
     })
   }
   store = useViewerStore()
@@ -20,6 +31,9 @@ export class BoxSpaceEntity {
   boxHelper: THREE.BoxHelper
 
   constructor(public box: Types.Box) {
+    // setInterval(() => {
+    //   this.materials.select.uniforms.time.value += 0.01
+    // }, 10)
     this.geometry = new THREE.BoxGeometry(
       box.geometry.width,
       box.geometry.height,
@@ -29,7 +43,7 @@ export class BoxSpaceEntity {
     this.mesh.position.x = box.position.x
     this.mesh.position.y = box.position.y + box.geometry.height / 2
     this.mesh.position.z = box.position.z
-    this.boxHelper = new THREE.BoxHelper(this.mesh, 0xffffff)
+    this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181C22)
     this.group.add(this.mesh, this.boxHelper)
 
     watch(() => ({
@@ -80,6 +94,6 @@ export class BoxSpaceEntity {
     this.boxHelper.material.color = new THREE.Color(0x1f6feb)
   }
   unhover() {
-    this.boxHelper.material.color = new THREE.Color(0xffffff)
+    this.boxHelper.material.color = new THREE.Color(0x181C22)
   }
 }

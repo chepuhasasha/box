@@ -1,6 +1,7 @@
 import type { Types } from '@box/adapter'
 import type { Viewer, ViewerTool } from '.'
 import * as THREE from 'three'
+import { shaders } from './shaders'
 
 export class PointerTool implements ViewerTool {
   enable: boolean = true
@@ -23,8 +24,18 @@ export class PointerTool implements ViewerTool {
 
   addShadow(box: Types.Box) {
     if (!this.viewer) return null
-    const geometry = new THREE.BoxGeometry(box.geometry.width, box.geometry.height, box.geometry.depth)
-    const material = new THREE.MeshMatcapMaterial({color: 0xffffff, transparent: true, opacity: 1 })
+    const geometry = new THREE.BoxGeometry(
+      box.geometry.width,
+      box.geometry.height,
+      box.geometry.depth
+    )
+
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x1f6feb,
+      transparent: true,
+      opacity: 0.5
+    })
+
     this.shadow = new THREE.Mesh(geometry, material)
     this.shadow.position.x = box.position.x
     this.shadow.position.y = box.position.y + box.geometry.height / 2
@@ -78,9 +89,10 @@ export class PointerTool implements ViewerTool {
   onPointerup(e: PointerEvent) {
     if (!this.viewer) return
     const ray = this.setRay(e)
-    if(this.shadow && this.viewer.store.selected.box) {
+    if (this.shadow && this.viewer.store.selected.box) {
       this.viewer.store.selected.box.position.x = this.shadow.position.x
-      this.viewer.store.selected.box.position.y = this.shadow.position.y - this.viewer.store.selected.box.geometry.height / 2
+      this.viewer.store.selected.box.position.y =
+        this.shadow.position.y - this.viewer.store.selected.box.geometry.height / 2
       this.viewer.store.selected.box.position.z = this.shadow.position.z
     }
     this.viewer.store.selected.box = ray.object ? ray.object.box : null

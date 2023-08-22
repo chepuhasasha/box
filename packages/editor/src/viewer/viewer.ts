@@ -26,8 +26,8 @@ export class Viewer {
       background: number
       grid: [number, number, number, number]
     } = {
-      background: 0xFFFFFF,
-      grid: [10000, 100, 0xc9d1d9, 0xF0F6FC]
+      background: 0xffffff,
+      grid: [10000, 100, 0xc9d1d9, 0xf0f6fc]
     }
   ) {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -103,13 +103,14 @@ export class Viewer {
     this.camera.bottom = rect.height / -2
     this.camera.near = -10000
     this.camera.far = 10000
-    this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(rect.width, rect.height)
     this.camera.position.set(1000, 1000, 1000)
     this.camera.updateProjectionMatrix()
   }
 
   setCameraPosition(x: number, y: number, z: number) {
+    this.controls.reset()
     this.camera.position.set(x, y, z)
     this.camera.updateProjectionMatrix()
     this.controls.update()
