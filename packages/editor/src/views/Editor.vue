@@ -21,17 +21,19 @@
       v-for='container in viewerStore.file.containers'
       :key="container.id"
       :container='container')
+  .editor_bottom
+    e_button(fill size='l' :icons='[null, "magic"]' mode='ghost' disable) AI (soon)
 
   .editor_viewer(ref='viewerDiv')
   .editor_tools
     e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
-    e_drop(left='-130px')
-      template(v-slot:head)
-        e_icon_button(name='eye' )
-      e_button(mode='trans') Home
-      e_button(mode='trans') Top
-      e_button(mode='trans') Front
-      e_button(mode='trans') Left
+    //- e_drop(left='-130px')
+    //-   template(v-slot:head)
+    //-     e_icon_button(name='eye' )
+    e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 1000, 1000)') ISOMETRY
+    e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 1000, 0)') TOP
+    e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 0, 1000)') FRONT
+    e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 0, 0)') LEFT
     
 
 Teleport(to='body')
@@ -68,7 +70,7 @@ onUnmounted(() => {
 .editor
   display: grid
   grid-template-columns: max-content 1fr max-content
-  grid-template-rows: max-content 1fr
+  grid-template-rows: max-content 1fr max-content
   width: 100vw
   height: 100vh
 
@@ -103,8 +105,10 @@ onUnmounted(() => {
     border-right: 1px solid var(--background-color-200)
 
     background: var(--background-color-100)
+  &_bottom
+    grid-area: 3/1/4/2
   &_viewer
-    grid-area: 1/2/3/3
+    grid-area: 1/2/4/3
   &_tools
     grid-area: 1/2/2/3
     display: flex
@@ -114,7 +118,7 @@ onUnmounted(() => {
     justify-self: center
     background: rgba(255,255,255, 0.8)
     border: 1px solid var(--background-color-200)
-    backdrop-filter: blur(5px)
+    backdrop-filter: blur(10px)
     padding: 10px
     border-radius: 0 0 4px 4px
 </style>

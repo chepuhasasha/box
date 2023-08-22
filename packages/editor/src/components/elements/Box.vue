@@ -14,10 +14,28 @@
     ) {{ box.container_id ? "positioned" : "unpositioned" }}
   e_drop(left='-130px')
     template(v-slot:head)
+      e_icon_button(name='info')
+    .box_min
+      span W: 
+        b {{ box.geometry.width }} mm
+      span H: 
+        b {{ box.geometry.height }} mm 
+      span D: 
+        b {{ box.geometry.depth }} mm
+    .box_min
+      span X: 
+        b {{ box.position.x }} mm
+      span Y: 
+        b {{ box.position.y}} mm 
+      span Z: 
+        b {{ box.position.z }} mm
+    e_button(mode="trans" fill :icons='[null, "edit"]') Edit
+  e_drop(left='-130px')
+    template(v-slot:head)
       e_icon_button(name='settings' contrast='100')
     e_button(mode="trans" fill :icons='[null, "plus"]') Dublicate
     e_button(mode="trans" status='danger' fill :icons='[null, "trash"]') Delete
-  e_icon_button(v-if='!box.container_id' name='target' contrast='100')
+  //- e_icon_button(v-if='!box.container_id' name='target' contrast='100')
 </template>
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
@@ -50,7 +68,17 @@ const classes = computed(() => ({
 
   &:hover, &__hovered
     background: var(--background-color-200)
-
+  &_min
+    display: flex
+    flex-direction: column
+    gap: 4px
+    padding: 10px
+    border: 1px solid var(--background-color-200)
+    border-radius: 4px
+    span
+      text-align: left
+      font-size: 12px
+      color: var(--text-color-300)
   &_info
     display: flex
     flex-direction: column

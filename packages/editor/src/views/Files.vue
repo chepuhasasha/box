@@ -10,7 +10,7 @@ wr_page.files
       .files_head_user
         e_user
       e_button.files_head_new(size='l' fill :icons='[null, "plus"]' @click='newFileModal = true') 
-        template(v-slot:content) 
+        .files_head_new_btn
           span New file
           span create a new cargo loading file
       .files_head_search
@@ -25,7 +25,7 @@ Teleport(to='body')
           v-model='filename'
           placeholder='start typing the file name...'
         )
-      e_button(size='l' :icons='[null, "cross"]' mode='ghost' fill @click='newFileModal = false') CANCEL
+      e_button(size='l' status="danger" mode='trans' fill @click='newFileModal = false') CANCEL
       e_button(size='l' :icons='[null, "plus"]' fill :disable='filename ? false : true' @click='createFile') CREATE
 </template>
 <script lang="ts" setup>
@@ -76,6 +76,19 @@ const createFile = () => {
       width: 300px
     &_new
       grid-area: 2 / 1 / 3 / 2
+      &_btn
+        display: flex
+        flex-direction: column
+        text-align: left
+        gap: 4px
+        span:first-child
+          font-size: 14px
+          font-weight: 500
+          line-height: 16px
+        span:last-child
+          font-size: 12px
+          line-height: 14px
+          font-weight: 400
     &_search
       grid-area: 2 / 2 / 3 / 4
       padding: 20px

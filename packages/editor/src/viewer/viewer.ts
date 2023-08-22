@@ -109,6 +109,12 @@ export class Viewer {
     this.camera.updateProjectionMatrix()
   }
 
+  setCameraPosition(x: number, y: number, z: number) {
+    this.camera.position.set(x, y, z)
+    this.camera.updateProjectionMatrix()
+    this.controls.update()
+  }
+
   get view() {
     if (this.DOMElement) {
       return this.DOMElement.getBoundingClientRect()

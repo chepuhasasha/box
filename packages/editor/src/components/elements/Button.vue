@@ -2,8 +2,6 @@
 component(:is='tag').button(:class='classes', :style='{width: fill ? "100%" : "max-content"}')
   w_icon(v-if='icons[0]' :name='icons[0]' :size='size')
   slot
-  .button_content
-    slot(name='content')
   w_icon(v-if='icons[1]' :name='icons[1]' :size='size')
 </template>
 <script lang="ts" setup>
@@ -42,21 +40,6 @@ const classes = computed(() => ({
   transition: all ease 0.3s
   outline: none
 
-  &_content
-    display: flex
-    flex-direction: column
-    text-align: left
-    gap: 4px
-    span:first-child
-      font-size: 14px
-      font-weight: 500
-      line-height: 16px
-    span:last-child
-      font-size: 12px
-      line-height: 14px
-      font-weight: 400
-
-
   &:focus-visible
     outline: 2px solid var(--interactive-color-bg)
 
@@ -64,9 +47,13 @@ const classes = computed(() => ({
     background: var(--disable-background-color) !important
     cursor: not-allowed !important
     color: var(--disable-text-color) !important
+    path
+      stroke: var(--disable-text-color) !important
     &:hover
       background: var(--disable-background-color) !important
       color: var(--disable-text-color) !important
+      path
+        stroke: var(--disable-text-color) !important
 
   &__s
     border-radius: 2px
@@ -182,7 +169,10 @@ const classes = computed(() => ({
     path
       stroke: var(--text-color-100)
     &:hover 
+      background: var(--interactive-color-transparent)
       color: var(--interactive-color-bg)
+      *
+        color: var(--interactive-color-bg)
       path
         stroke: var(--interactive-color-bg)
     &__ok

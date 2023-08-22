@@ -93,9 +93,9 @@ export class PointerTool implements ViewerTool {
     if (!this.viewer) return
     const ray = this.setRay(e)
     if (this.shadow && ray.point && ray.object) {
-      this.shadow.position.x = ray.point.x
-      this.shadow.position.y = ray.point.y
-      this.shadow.position.z = ray.point.z
+      this.shadow.position.x = Math.floor(ray.point.x)
+      this.shadow.position.y = Math.floor(ray.point.y)
+      this.shadow.position.z = Math.floor(ray.point.z)
     }
     this.viewer.store.hovered.box = ray.object ? ray.object.box : null
   }
