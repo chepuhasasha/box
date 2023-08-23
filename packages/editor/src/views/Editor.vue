@@ -5,7 +5,7 @@
       template(v-slot:head)
         e_icon_button(name='menu' contrast='100')
       e_button(mode="trans" fill) Open
-      e_button(mode="trans" fill :icons='[null, "left"]') Back to files
+      e_button(mode="trans" fill :icons='[null, "list"]' @click='toFiles') Files
       e_button(mode="trans" fill :icons='[null, "save"]') Save
       e_button(mode="trans" fill :icons='[null, "download"]') Save local
       e_button(mode="trans" fill :icons='[null, "file"]') View doc
@@ -26,21 +26,24 @@
 
   .editor_viewer(ref='viewerDiv')
   .editor_tools
-    e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
-    //- e_drop(left='-130px')
-    //-   template(v-slot:head)
-    //-     e_icon_button(name='eye' )
-    e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 1000, 1000)') ISOMETRY
-    e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 1000, 0)') TOP
-    e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 0, 1000)') FRONT
-    e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 0, 0)') LEFT
-    
+    e_icon_button(name='undo')
+    e_icon_button(name='do')
+    e_icon_button(name='cursor' :active='pointerMode === "select"' @click='setPointerMode("select")')
+    e_icon_button(name='move' :active='pointerMode === "move"' @click='setPointerMode("move")')
+    e_icon_button(name='rotate' :active='pointerMode === "rotate"' @click='setPointerMode("rotate")')
+    e_drop(left='-130px')
+      template(v-slot:head)
+        e_icon_button(name='eye' )
+      e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 1000, 1000)') ISOMETRY
+      e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 1000, 0)') TOP
+      e_button(mode='trans' @click='VIEWER.setCameraPosition(0, 0, 1000)') FRONT
+      e_button(mode='trans' @click='VIEWER.setCameraPosition(1000, 0, 0)') LEFT
 
 Teleport(to='body')
   m_add_object(v-if='show.add_object' @close='show.add_object = false')
 </template>
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { Viewer, PointerTool, useViewerStore } from '@/viewer'
 
@@ -50,15 +53,27 @@ viewerStore.openFile(useRoute().params.id.toString())
 const show = ref({
   add_object: false
 })
-
+const router = useRouter()
+const pointerMode = ref<'move' | 'rotate' | 'select'>('select')
 const viewerDiv = ref<HTMLDivElement | null>(null)
 const VIEWER = new Viewer()
 const POINTER = new PointerTool()
+POINTER.mode = pointerMode.value
 VIEWER.use(POINTER)
+
+const setPointerMode = (mode: 'move' | 'rotate' | 'select') => {
+  POINTER.mode = mode
+  pointerMode.value = mode
+}
+
+const toFiles = () => {
+  window.open('/', 'blank')
+}
 
 onMounted(() => {
   if (viewerDiv.value) {
     VIEWER.mount(viewerDiv.value)
+    if (viewerStore.file) document.title = viewerStore.file.name
   }
 })
 
@@ -113,7 +128,7 @@ onUnmounted(() => {
     grid-area: 1/2/2/3
     display: flex
     gap: 10px
-    // z-index: 2
+    z-index: 2
     align-self: center
     justify-self: center
     background: rgba(255,255,255, 0.8)

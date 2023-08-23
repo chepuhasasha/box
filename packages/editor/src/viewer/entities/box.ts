@@ -14,6 +14,9 @@ export class BoxSpaceEntity {
       uniforms: {
         time: { value: 0.0 },
         density: { value: 5 },
+        angle: { value: 45 },
+        opacity: { value: 0.2 },
+        threshold: { value: 0.92 },
         r: { value: 0.12 },
         g: { value: 0.44 },
         b: { value: 0.92 }
@@ -31,9 +34,9 @@ export class BoxSpaceEntity {
   boxHelper: THREE.BoxHelper
 
   constructor(public box: Types.Box) {
-    // setInterval(() => {
-    //   this.materials.select.uniforms.time.value += 0.01
-    // }, 10)
+    setInterval(() => {
+      this.materials.select.uniforms.time.value += 0.01
+    }, 10)
     this.geometry = new THREE.BoxGeometry(
       box.geometry.width,
       box.geometry.height,
@@ -41,7 +44,7 @@ export class BoxSpaceEntity {
     )
     this.mesh = new THREE.Mesh(this.geometry, this.materials.base)
     this.mesh.position.x = box.position.x
-    this.mesh.position.y = box.position.y + box.geometry.height / 2
+    this.mesh.position.y = box.position.y
     this.mesh.position.z = box.position.z
     this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181C22)
     this.group.add(this.mesh, this.boxHelper)
@@ -51,9 +54,8 @@ export class BoxSpaceEntity {
       y: box.position.y,
       z: box.position.z,
     }), (n, o) => {
-      console.log(n)
       this.mesh.position.x = box.position.x
-      this.mesh.position.y = box.position.y + box.geometry.height / 2
+      this.mesh.position.y = box.position.y
       this.mesh.position.z = box.position.z
       this.boxHelper.update()
     })

@@ -11,6 +11,9 @@ export class ContainerSpaceEntity {
     uniforms: {
       time: { value: 0.0 },
       density: { value: 10 },
+      angle: { value: 45 },
+      opacity: { value: 0.1 },
+      threshold: { value: 0.5 },
       r: { value: 1 },
       g: { value: 0 },
       b: { value: 0 }

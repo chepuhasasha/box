@@ -2,7 +2,7 @@
 .file-list-item
   .file-list-item_btns
     e_icon_button(name='menu_dots' @click='menuIsOpen = !menuIsOpen')
-    e_icon_button(v-if='menuIsOpen && userStore.user && userStore.user.pro' name='qr' @click='showQrGenerator = true')
+    e_icon_button(v-if='menuIsOpen && userStore.user && userStore.user.pro' name='share' @click='generateQRCode')
     e_icon_button(v-if='menuIsOpen' name='download')
   .file-list-item_info
     .file-list-item_info_name {{ file.name  }}
@@ -15,11 +15,9 @@
     target="_blank"
     ) OPEN
 Teleport(to='body')
-  wr_modal(name='QR code' v-if='showQrGenerator' @close='showQrGenerator = false')
-    canvas(ref='canvas' width="500" height="0")
-    .file-list-item_modal_input
-      e_input(label='SECRET KEY' contrast='200' v-model='qrKey' @keydown.enter='generateQRCode')
-    e_button(@click='generateQRCode' size='l' :icons="[null, 'qr']" fill) GENERATE
+  wr_modal(name='QR code' v-show='showQrGenerator' @close='showQrGenerator = false')
+    canvas(ref='canvas' width="400" height="0")
+    e_button(@click='saveQr' mode='ghost' size='l' :icons="[null, 'download']" fill) DOWNLOAD
 </template>
 <script lang="ts" setup>
 import { ref, type PropType, computed } from 'vue'
@@ -42,26 +40,36 @@ const props = defineProps({
 const userStore = useUserStore()
 const menuIsOpen = ref(false)
 const showQrGenerator = ref(false)
-const qrKey = ref<string>('')
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 const blur = () => {
   menuIsOpen.value = false
 }
 
+const saveQr = () => {
+  if (canvas.value) {
+    const imageDataURL = canvas.value.toDataURL('image/png')
+    const link = document.createElement('a')
+    link.href = imageDataURL
+    link.download = `${props.file.name} QR.png`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    showQrGenerator.value = false
+  }
+}
 const generateQRCode = () => {
-  // if (canvas.value) {
-  //   const code = encrypt(props.file, qrKey.value)
-  //   QRCode.toCanvas(canvas.value, 'http://192.168.0.229:5173/viewer/' + code, {
-  //     width: 500,
-  //     color: {
-  //       dark: '#010409ff',
-  //       light: '#f0f6fcff'
-  //     },
-  //     margin: 2
-  //   })
-  //   // qrKey.value = ''
-  // }
+  if (canvas.value) {
+    showQrGenerator.value = true
+    QRCode.toCanvas(canvas.value, 'http://172.16.200.78:5173/editor/' + props.file.id, {
+      width: 500,
+      color: {
+        dark: '#010409ff',
+        light: '#ffffff'
+      },
+      margin: 2
+    })
+  }
 }
 
 const router = useRouter()
@@ -83,6 +91,7 @@ const href = computed(() => {
 
   &_btns
     display: flex
+    gap: 10px
   &_info
     display: flex
     flex-direction: column

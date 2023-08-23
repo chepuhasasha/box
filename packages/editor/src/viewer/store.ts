@@ -32,9 +32,9 @@ export const useViewerStore = defineStore('viewer', {
             },
             name: 'Test box',
             position: {
-              x: -200,
-              y: 0,
-              z: 200
+              x: -450,
+              y: 100,
+              z: 425
             },
             rotate: {
               x_rotate: 0,
@@ -86,7 +86,7 @@ export const useViewerStore = defineStore('viewer', {
             id: '1',
             object_type: 'CONTAINER',
             name: 'Test container',
-            boxes: ['123', '234'],
+            boxes: ['123'],
             geometry: {
               width: 1000,
               height: 1000,

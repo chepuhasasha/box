@@ -11,6 +11,9 @@ export const shaders = {
     varying vec2 vUv;
     uniform float time;
     uniform float density;
+    uniform float opacity;
+    uniform float threshold;
+    uniform float angle;
     uniform float r;
     uniform float g;
     uniform float b;
@@ -18,23 +21,13 @@ export const shaders = {
     void main() {
       vec2 uv = vUv;
   
-      // Угол для штриховки (45 градусов)
-      float angle = radians(45.0);
-      vec2 rotatedUV = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * uv;
+      float angleRadians = radians(angle);
+      vec2 rotatedUV = mat2(cos(angleRadians), -sin(angleRadians), sin(angleRadians), cos(angleRadians)) * uv;
   
       // Создание штриховки
       float stripeValue = mod(rotatedUV.y * density + time, 1.0);
-  
-      // Красные линии
-      float threshold = 0.5; // Порог для определения прозрачных областей
-      float lineDistance = abs(mod(rotatedUV.y * density + time, 1.0) - 0.5) * 2.0;
-      float alpha = step(threshold, lineDistance);
-
-      // Красные линии
-      vec3 stripeColor = vec3(r, g, b); // Красный цвет
-      vec3 finalColor = mix(vec3(0.0), stripeColor, step(threshold, stripeValue));
-  
-      gl_FragColor = vec4(finalColor, step(threshold, stripeValue));
+ 
+      gl_FragColor = vec4(vec3(r, g, b), step(threshold, stripeValue) + opacity);
     }
     `
   }
