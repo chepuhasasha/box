@@ -28,9 +28,7 @@
   .editor_tools
     e_icon_button(name='undo')
     e_icon_button(name='do')
-    e_icon_button(name='cursor' :active='pointerMode === "select"' @click='setPointerMode("select")')
-    e_icon_button(name='move' :active='pointerMode === "move"' @click='setPointerMode("move")')
-    e_icon_button(name='rotate' :active='pointerMode === "rotate"' @click='setPointerMode("rotate")')
+    e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
     e_drop(left='-130px')
       template(v-slot:head)
         e_icon_button(name='eye' )
@@ -45,7 +43,7 @@ Teleport(to='body')
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { Viewer, PointerTool, useViewerStore } from '@/viewer'
+import { Viewer, useViewerStore, SelectTool, MoverTool } from '@/viewer'
 
 const viewerStore = useViewerStore()
 viewerStore.openFile(useRoute().params.id.toString())
@@ -54,17 +52,9 @@ const show = ref({
   add_object: false
 })
 const router = useRouter()
-const pointerMode = ref<'move' | 'rotate' | 'select'>('select')
 const viewerDiv = ref<HTMLDivElement | null>(null)
 const VIEWER = new Viewer()
-const POINTER = new PointerTool()
-POINTER.mode = pointerMode.value
-VIEWER.use(POINTER)
-
-const setPointerMode = (mode: 'move' | 'rotate' | 'select') => {
-  POINTER.mode = mode
-  pointerMode.value = mode
-}
+const MOVER = new MoverTool(VIEWER)
 
 const toFiles = () => {
   window.open('/', 'blank')

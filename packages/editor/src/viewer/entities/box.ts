@@ -20,12 +20,12 @@ export class BoxSpaceEntity {
         r: { value: 0.12 },
         g: { value: 0.44 },
         b: { value: 0.92 }
-      },
+      }
     }),
-    base: new THREE.MeshBasicMaterial({
-      color: 0x000000,
+    base: new THREE.MeshMatcapMaterial({
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.3
+      opacity: 0.6
     })
   }
   store = useViewerStore()
@@ -34,9 +34,6 @@ export class BoxSpaceEntity {
   boxHelper: THREE.BoxHelper
 
   constructor(public box: Types.Box) {
-    setInterval(() => {
-      this.materials.select.uniforms.time.value += 0.01
-    }, 10)
     this.geometry = new THREE.BoxGeometry(
       box.geometry.width,
       box.geometry.height,
@@ -46,19 +43,24 @@ export class BoxSpaceEntity {
     this.mesh.position.x = box.position.x
     this.mesh.position.y = box.position.y
     this.mesh.position.z = box.position.z
-    this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181C22)
+    this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181c22)
     this.group.add(this.mesh, this.boxHelper)
 
-    watch(() => ({
-      x: box.position.x,
-      y: box.position.y,
-      z: box.position.z,
-    }), (n, o) => {
-      this.mesh.position.x = box.position.x
-      this.mesh.position.y = box.position.y
-      this.mesh.position.z = box.position.z
-      this.boxHelper.update()
-    })
+    watch(
+      () => ({
+        x: box.position.x,
+        y: box.position.y,
+        z: box.position.z,
+        x_rotate: box.rotate.x_rotate,
+        y_rotate: box.rotate.y_rotate,
+        z_rotate: box.rotate.z_rotate
+      }),
+      (n, o) => {
+        this.mesh.position.set(box.position.x, box.position.y, box.position.z)
+        this.mesh.rotation.set(box.rotate.x_rotate, box.rotate.y_rotate, box.rotate.z_rotate)
+        this.boxHelper.update()
+      }
+    )
 
     watch(
       () => ({
@@ -66,10 +68,10 @@ export class BoxSpaceEntity {
         selected: this.store.selected.box
       }),
       (n, o) => {
-        if(!n.hovered) {
+        if (!n.hovered) {
           this.unhover()
         }
-        if(!n.selected) {
+        if (!n.selected) {
           this.unselect()
         }
         if (n.selected && n.selected.id === box.id) {
@@ -87,15 +89,22 @@ export class BoxSpaceEntity {
   }
 
   select() {
+    this.boxHelper.material.color = new THREE.Color(0x1f6feb)
     this.mesh.material = this.materials.select
   }
   unselect() {
     this.mesh.material = this.materials.base
+    this.boxHelper.material.color = new THREE.Color(0x181c22)
   }
   hover() {
     this.boxHelper.material.color = new THREE.Color(0x1f6feb)
   }
   unhover() {
-    this.boxHelper.material.color = new THREE.Color(0x181C22)
+    if (!this.store.selected.box || this.store.selected.box.id != this.box.id) {
+      this.boxHelper.material.color = new THREE.Color(0x181c22)
+    }
+  }
+  tick() {
+    this.materials.select.uniforms.time.value += 0.01
   }
 }

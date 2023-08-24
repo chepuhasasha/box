@@ -64,6 +64,7 @@ export class Viewer {
     if (this.container) {
       this.container.tick()
     }
+    this.boxes.forEach(box => box.tick())
   }
 
   addContainer(container: Types.Container) {
@@ -121,9 +122,5 @@ export class Viewer {
       return this.DOMElement.getBoundingClientRect()
     }
     return null
-  }
-
-  use(tool: ViewerTool) {
-    tool.install(this)
   }
 }

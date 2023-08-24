@@ -1,3 +1,4 @@
 export * from './viewer'
-export * from './pointer'
+export * from './select'
+export * from './mover'
 export * from './store'
