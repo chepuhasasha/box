@@ -28,7 +28,8 @@
   .editor_tools
     e_icon_button(name='undo')
     e_icon_button(name='do')
-    e_icon_button(name='plus' contrast='100' @click='show.add_object = true')
+    e_icon_button(name='move' active)
+    e_icon_button(name='rotate')
     e_drop(left='-130px')
       template(v-slot:head)
         e_icon_button(name='eye' )
