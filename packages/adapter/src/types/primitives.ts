@@ -11,9 +11,9 @@ export interface SpacePoint {
 }
 
 export interface BoxRotate {
-  x_rotate: number
-  y_rotate: number
-  z_rotate: number
+  x_rotate: boolean
+  y_rotate: boolean
+  z_rotate: boolean
 }
 
 export interface ServerError {

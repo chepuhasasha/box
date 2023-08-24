@@ -20,7 +20,7 @@ export class MoverTool {
       side: THREE.DoubleSide
     }),
     accent: new THREE.MeshBasicMaterial({
-      color: this.colors.accent,
+      color: this.colors.visible,
       transparent: true,
       opacity: 1,
       side: THREE.DoubleSide
@@ -36,6 +36,7 @@ export class MoverTool {
       linewidth: 2,
       dashSize: 20,
       gapSize: 10,
+      side: THREE.DoubleSide
     })
   }
   helpers: {
@@ -74,6 +75,35 @@ export class MoverTool {
     })
   }
 
+  addTools(box: Types.Box) {
+    this.addAxialArrows(box)
+    this.addRotationRings(box)
+    this.addShadow(box)
+  }
+  removeTools() {
+    this.removeAxialArrows()
+    this.removeRotationRings()
+    this.removePointerPlanes()
+    this.removeShadow()
+  }
+
+  getRotatedGeometry({geometry, rotate}: Types.Box) {
+    const g = {...geometry}
+    if(rotate.x_rotate) {
+      g.depth = geometry.height
+      g.height = geometry.depth
+    }
+    if(rotate.y_rotate) {
+      g.width = geometry.depth
+      g.depth = geometry.width
+    }
+    if(rotate.z_rotate) {
+      g.height = geometry.width
+      g.width = geometry.height
+    }
+    return g
+  }
+
   select(e: PointerEvent) {
     const boxes = this.viewer.boxes.map((box) => box.mesh)
     const boxRay = setRay(this.viewer, e, boxes)
@@ -82,23 +112,16 @@ export class MoverTool {
 
     if (groupRay) return
 
-    if (!box) {
+    if (!box || this.store.selected.box) {
       this.store.selected.box = null
-      this.removeAxialArrows()
-      this.removeRotationRings()
-      this.removePointerPlanes()
-      this.removeShadow()
-    } else if (
-      (this.store.selected.box && this.store.selected.box.id != box.id) ||
-      !this.store.selected.box
-    ) {
+      this.removeTools()
+    } 
+    if(box) {
       this.store.selected.box = box
       this.group.position.x = box.position.x
       this.group.position.y = box.position.y
       this.group.position.z = box.position.z
-      this.addAxialArrows(box)
-      this.addRotationRings(box)
-      this.addShadow(box)
+      this.addTools(box)
     }
   }
 
@@ -124,13 +147,13 @@ export class MoverTool {
     } else {
       this.removePointerPlanes()
     }
-    if (ring) {
+    if (ring && box) {
       if (ring.object.name === 'R_X') {
-        this.group.rotateX(Math.PI / 2)
+        box.rotate.x_rotate = !box.rotate.x_rotate 
       } else if (ring.object.name === 'R_Y') {
-        this.group.rotateY(Math.PI / 2)
+        box.rotate.y_rotate = !box.rotate.y_rotate 
       } else if (ring.object.name === 'R_Z') {
-        this.group.rotateZ(Math.PI / 2)
+        box.rotate.z_rotate = !box.rotate.z_rotate 
       }
     }
   }
@@ -171,9 +194,6 @@ export class MoverTool {
       this.viewer.store.selected.box.position.x = this.group.position.x
       this.viewer.store.selected.box.position.y = this.group.position.y
       this.viewer.store.selected.box.position.z = this.group.position.z
-      this.viewer.store.selected.box.rotate.x_rotate = this.group.rotation.x
-      this.viewer.store.selected.box.rotate.y_rotate = this.group.rotation.y
-      this.viewer.store.selected.box.rotate.z_rotate = this.group.rotation.z
     }
   }
 
@@ -235,6 +255,7 @@ export class MoverTool {
     this.group.add(...this.helpers.rotationRings)
   }
   addAxialArrows(box: Types.Box, size: number = 20) {
+    const geometry = this.getRotatedGeometry(box)
     const arrow = new THREE.Mesh(
       new THREE.CylinderGeometry(0, size / 2, size, 50),
       this.materials.visible
@@ -252,26 +273,31 @@ export class MoverTool {
     _y.name = 'A_Y'
     _z.name = 'A_Z'
 
-    x.position.x = box.geometry.width / 2 + size
-    _x.position.x = -(box.geometry.width / 2) - size
+    x.position.x = geometry.width / 2 + size
+    _x.position.x = -(geometry.width / 2) - size
     x.rotateZ(-Math.PI / 2)
     _x.rotateZ(Math.PI / 2)
 
-    y.position.y = box.geometry.height / 2 + size
-    _y.position.y = -(box.geometry.height / 2) - size
+    y.position.y = geometry.height / 2 + size
+    _y.position.y = -(geometry.height / 2) - size
     _y.rotateZ(Math.PI)
 
-    z.position.z = box.geometry.depth / 2 + size
-    _z.position.z = -(box.geometry.depth / 2) - size
+    z.position.z = geometry.depth / 2 + size
+    _z.position.z = -(geometry.depth / 2) - size
     z.rotateX(Math.PI / 2)
     _z.rotateX(-Math.PI / 2)
 
     this.helpers.axialArrows = [x, _x, y, _y, z, _z]
     this.group.add(...this.helpers.axialArrows)
   }
-  addShadow({ geometry }: Types.Box) {
+  addShadow(box: Types.Box) {
+    const g = this.getRotatedGeometry(box)
     const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(geometry.width, geometry.height, geometry.depth),
+      new THREE.BoxGeometry(
+        g.width,
+        g.height,
+        g.depth
+      ),
       this.materials.invisible
     )
     this.helpers.shadow = new THREE.BoxHelper(mesh, this.colors.accent)
@@ -301,12 +327,12 @@ export class MoverTool {
     }
   }
   updateMoveLine() {
-    if(!this.helpers.moveLine || !this.viewer.store.selected.box) return
+    if (!this.helpers.moveLine || !this.viewer.store.selected.box) return
     const boxPosition = this.viewer.store.selected.box.position
-    const vertices = this.helpers.moveLine.geometry.attributes.position;
-    vertices.setXYZ(0, boxPosition.x, boxPosition.y, boxPosition.z);
-    vertices.setXYZ(1, this.group.position.x , this.group.position.y, this.group.position.z); 
+    const vertices = this.helpers.moveLine.geometry.attributes.position
+    vertices.setXYZ(0, boxPosition.x, boxPosition.y, boxPosition.z)
+    vertices.setXYZ(1, this.group.position.x, this.group.position.y, this.group.position.z)
     this.helpers.moveLine.computeLineDistances()
-    vertices.needsUpdate = true;
+    vertices.needsUpdate = true
   }
 }

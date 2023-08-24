@@ -47,12 +47,12 @@ export class ContainerSpaceEntity {
     )
     box.position.y = (container.geometry.height / 2) + 1
     const helper = new THREE.BoxHelper(box, 0x000000)
-    const heightGeometry = new THREE.CylinderGeometry(4, 4, container.geometry.height)
-    const heightMesh = new THREE.Mesh(heightGeometry, this.basicMaterial)
-    heightMesh.position.y = container.geometry.height / 2
+    // const heightGeometry = new THREE.CylinderGeometry(4, 4, container.geometry.height)
+    // const heightMesh = new THREE.Mesh(heightGeometry, this.basicMaterial)
+    // heightMesh.position.y = container.geometry.height / 2
 
     this.group = new THREE.Group()
-    this.group.add(lt, rt, lb, rb, heightMesh, helper)
+    this.group.add(lt, rt, lb, rb, helper)
 
     return this
   }

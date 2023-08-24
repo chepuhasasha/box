@@ -37,16 +37,16 @@ export const useViewerStore = defineStore('viewer', {
               z: 425
             },
             rotate: {
-              x_rotate: 0,
-              y_rotate: 0,
-              z_rotate: 0
+              x_rotate: false,
+              y_rotate: false,
+              z_rotate: false
             },
             container_id: '1',
             props: {
               rotate_limits: {
-                x_rotate: 0,
-                y_rotate: 0,
-                z_rotate: 0
+                x_rotate: true,
+                y_rotate: true,
+                z_rotate: true
               },
               weight: 10
             }
@@ -62,20 +62,20 @@ export const useViewerStore = defineStore('viewer', {
             name: 'Test box',
             position: {
               x: 200,
-              y: 0,
+              y: 50,
               z: 0
             },
             rotate: {
-              x_rotate: 0,
-              y_rotate: 0,
-              z_rotate: 0
+              x_rotate: false,
+              y_rotate: true,
+              z_rotate: false
             },
-            container_id: null,
+            container_id: "1",
             props: {
               rotate_limits: {
-                x_rotate: 0,
-                y_rotate: 0,
-                z_rotate: 0
+                x_rotate: true,
+                y_rotate: true,
+                z_rotate: true
               },
               weight: 10
             }

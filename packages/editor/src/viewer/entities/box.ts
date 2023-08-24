@@ -46,6 +46,8 @@ export class BoxSpaceEntity {
     this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181c22)
     this.group.add(this.mesh, this.boxHelper)
 
+    this.rotate(box.rotate)
+
     watch(
       () => ({
         x: box.position.x,
@@ -57,7 +59,7 @@ export class BoxSpaceEntity {
       }),
       (n, o) => {
         this.mesh.position.set(box.position.x, box.position.y, box.position.z)
-        this.mesh.rotation.set(box.rotate.x_rotate, box.rotate.y_rotate, box.rotate.z_rotate)
+        this.rotate(box.rotate)
         this.boxHelper.update()
       }
     )
@@ -86,6 +88,36 @@ export class BoxSpaceEntity {
         }
       }
     )
+  }
+
+  rotate(rotate: Types.BoxRotate) {
+    const geometry = {...this.box.geometry}
+    if(rotate.x_rotate) {
+      geometry.depth = this.box.geometry.height
+      geometry.height = this.box.geometry.depth
+    }
+    if(rotate.y_rotate) {
+      geometry.width = this.box.geometry.depth
+      geometry.depth = this.box.geometry.width
+    }
+    if(rotate.z_rotate) {
+      geometry.height = this.box.geometry.width
+      geometry.width = this.box.geometry.height
+    }
+    this.group.remove(this.mesh, this.boxHelper)
+  
+    this.geometry = new THREE.BoxGeometry(
+      geometry.width,
+      geometry.height,
+      geometry.depth
+    )
+    this.mesh = new THREE.Mesh(this.geometry, this.materials.base)
+    this.mesh.position.x = this.box.position.x
+    this.mesh.position.y = this.box.position.y
+    this.mesh.position.z = this.box.position.z
+    this.boxHelper = new THREE.BoxHelper(this.mesh, 0x181c22)
+    this.group.add(this.mesh, this.boxHelper)
+
   }
 
   select() {

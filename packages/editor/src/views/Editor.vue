@@ -105,7 +105,6 @@ onUnmounted(() => {
     width: 300px
     display: flex
     flex-direction: column
-    // gap: 2px
     overflow: auto
     border-right: 1px solid var(--background-color-200)
 
