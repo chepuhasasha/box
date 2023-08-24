@@ -93,16 +93,19 @@ export class BoxSpaceEntity {
   rotate(rotate: Types.BoxRotate) {
     const geometry = {...this.box.geometry}
     if(rotate.x_rotate) {
-      geometry.depth = this.box.geometry.height
-      geometry.height = this.box.geometry.depth
+      const depth = geometry.depth
+      geometry.depth = geometry.height
+      geometry.height = depth
     }
     if(rotate.y_rotate) {
-      geometry.width = this.box.geometry.depth
-      geometry.depth = this.box.geometry.width
+      const width = geometry.width
+      geometry.width = geometry.depth
+      geometry.depth = width
     }
     if(rotate.z_rotate) {
-      geometry.height = this.box.geometry.width
-      geometry.width = this.box.geometry.height
+      const height = geometry.height
+      geometry.height = geometry.width
+      geometry.width = height
     }
     this.group.remove(this.mesh, this.boxHelper)
   

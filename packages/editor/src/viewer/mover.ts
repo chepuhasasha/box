@@ -87,21 +87,24 @@ export class MoverTool {
     this.removeShadow()
   }
 
-  getRotatedGeometry({geometry, rotate}: Types.Box) {
-    const g = {...geometry}
-    if(rotate.x_rotate) {
-      g.depth = geometry.height
-      g.height = geometry.depth
+  getRotatedGeometry(box: Types.Box) {
+    const geometry = {...box.geometry}
+    if(box.rotate.x_rotate) {
+      const depth = geometry.depth
+      geometry.depth = geometry.height
+      geometry.height = depth
     }
-    if(rotate.y_rotate) {
-      g.width = geometry.depth
-      g.depth = geometry.width
+    if(box.rotate.y_rotate) {
+      const width = geometry.width
+      geometry.width = geometry.depth
+      geometry.depth = width
     }
-    if(rotate.z_rotate) {
-      g.height = geometry.width
-      g.width = geometry.height
+    if(box.rotate.z_rotate) {
+      const height = geometry.height
+      geometry.height = geometry.width
+      geometry.width = height
     }
-    return g
+    return geometry
   }
 
   select(e: PointerEvent) {
@@ -155,6 +158,8 @@ export class MoverTool {
       } else if (ring.object.name === 'R_Z') {
         box.rotate.z_rotate = !box.rotate.z_rotate 
       }
+      this.removeTools()
+      this.addTools(box)
     }
   }
   pointerMove(e: PointerEvent) {
